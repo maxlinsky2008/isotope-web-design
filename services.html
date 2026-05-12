@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services | Isotope Web Design</title>
+  <meta name="description" content="Website design, development, branding, SEO, and maintenance for home improvement businesses. No vague packages — just clear, honest work.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__brand">
+        <img src="images/wordmark.png" alt="Isotope Web Design" class="nav__wordmark">
+      </a>
+      <ul class="nav__links" role="list">
+        <li><a href="services.html" class="nav__link">Services</a></li>
+        <li><a href="portfolio.html" class="nav__link">Portfolio</a></li>
+        <li><a href="about.html" class="nav__link">About</a></li>
+      </ul>
+      <div class="nav__actions">
+        <a href="contact.html" class="btn btn--green btn--sm nav__cta-desktop">Get a Quote</a>
+        <button class="nav__toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__drawer" id="nav-drawer" aria-hidden="true">
+      <ul role="list">
+        <li><a href="services.html">Services</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="btn btn--green">Get a Quote</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="container">
+        <span class="page-hero__label reveal">What we offer</span>
+        <h1 class="reveal reveal--d1">Services</h1>
+        <p class="page-hero__sub reveal reveal--d2">Clear work for clear prices. No vague packages, no surprise scope creep. Here's exactly what you get when you work with Isotope.</p>
+      </div>
+    </section>
+
+    <!-- SERVICE BLOCKS -->
+    <div class="services-blocks">
+
+      <!-- 01: Website Design -->
+      <div class="service-block" id="design">
+        <div class="container service-block__inner">
+          <div class="service-block__meta reveal">
+            <p class="service-block__num">01</p>
+            <div class="service-block__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
+              </svg>
+            </div>
+            <h2>Website Design</h2>
+            <p>A custom layout built around your brand, your audience, and what you want them to do.</p>
+          </div>
+          <div class="service-block__body reveal reveal--d1">
+            <h3>What you get</h3>
+            <p>Your website is often the first thing a potential customer sees. It needs to look credible and professional in seconds. I design layouts that are modern, organized, and built specifically for your trade — not recycled from a generic template.</p>
+            <p>Every design is built mobile-first, so it looks great whether your customer is checking you out on a job site from their phone or sitting at a desk.</p>
+            <ul class="service-block__includes" role="list">
+              <li>Custom page layouts for every section of your site</li>
+              <li>Mobile-first responsive design</li>
+              <li>Brand color and typography application</li>
+              <li>Visual hierarchy that guides visitors toward your contact form</li>
+              <li>Up to 2 design revisions before development begins</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02: Website Development -->
+      <div class="service-block service-block--tint" id="development">
+        <div class="container service-block__inner">
+          <div class="service-block__meta reveal">
+            <p class="service-block__num">02</p>
+            <div class="service-block__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+              </svg>
+            </div>
+            <h2>Website Development</h2>
+            <p>Clean, hand-coded HTML, CSS, and JavaScript. Fast by default, no bloat.</p>
+          </div>
+          <div class="service-block__body reveal reveal--d1">
+            <h3>No page builders. No bloat.</h3>
+            <p>Sites built on drag-and-drop builders like Wix or Squarespace carry a lot of hidden weight — slow load times, poor SEO, and limitations you only discover later. I write code by hand, which means your site is lean, fast, and built exactly the way it should be.</p>
+            <p>Fast sites rank better on Google, convert better on mobile, and don't require a monthly subscription to a platform you don't own.</p>
+            <ul class="service-block__includes" role="list">
+              <li>Hand-coded HTML, CSS, and JavaScript</li>
+              <li>Optimized images and assets for fast load times</li>
+              <li>Cross-browser tested (Chrome, Safari, Firefox, Edge)</li>
+              <li>Contact form with validation</li>
+              <li>Deployment to a hosting provider of your choice</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03: Branding / Logos -->
+      <div class="service-block" id="branding">
+        <div class="container service-block__inner">
+          <div class="service-block__meta reveal">
+            <p class="service-block__num">03</p>
+            <div class="service-block__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <h2>Branding &amp; Logos</h2>
+            <p>A logo and visual identity that make your business look like it belongs at the top.</p>
+          </div>
+          <div class="service-block__body reveal reveal--d1">
+            <h3>Look the part</h3>
+            <p>A strong brand isn't just about having a nice logo — it's about consistency. When your truck wrap, your website, and your business card all use the same colors, fonts, and mark, customers remember you. I build complete identity systems, not just a single file.</p>
+            <p>Everything is delivered in formats you can actually use: vector files for print, PNGs for the web, and a simple brand guide so you always apply it correctly.</p>
+            <ul class="service-block__includes" role="list">
+              <li>Primary logomark and wordmark</li>
+              <li>Brand color palette with hex and CMYK values</li>
+              <li>Typography selection and usage guide</li>
+              <li>Deliverables in SVG, PNG, and PDF formats</li>
+              <li>Simple one-page brand guide</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04: SEO Basics -->
+      <div class="service-block service-block--tint" id="seo">
+        <div class="container service-block__inner">
+          <div class="service-block__meta reveal">
+            <p class="service-block__num">04</p>
+            <div class="service-block__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </div>
+            <h2>SEO Basics</h2>
+            <p>The foundational setup that lets Google find your business and show it to local customers.</p>
+          </div>
+          <div class="service-block__body reveal reveal--d1">
+            <h3>Get found locally</h3>
+            <p>Most small trade businesses don't need a complex SEO campaign — they need the basics done correctly. That means your pages have the right titles, descriptions, and structure so Google understands what you do and where you do it.</p>
+            <p>I also set up or optimize your Google Business Profile so your business shows up in local map searches, which is where most service-based searches end up.</p>
+            <ul class="service-block__includes" role="list">
+              <li>On-page SEO: titles, meta descriptions, heading structure</li>
+              <li>Google Business Profile setup or optimization</li>
+              <li>Basic local keyword targeting</li>
+              <li>XML sitemap and robots.txt configuration</li>
+              <li>Page speed optimization for Core Web Vitals</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05: Maintenance & Hosting -->
+      <div class="service-block" id="maintenance">
+        <div class="container service-block__inner">
+          <div class="service-block__meta reveal">
+            <p class="service-block__num">05</p>
+            <div class="service-block__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+              </svg>
+            </div>
+            <h2>Maintenance &amp; Hosting Help</h2>
+            <p>Keep your site up, secure, and current without having to think about it.</p>
+          </div>
+          <div class="service-block__body reveal reveal--d1">
+            <h3>Set it and forget it</h3>
+            <p>Once your site is live, you shouldn't have to worry about it going down, getting hacked, or becoming outdated. I handle ongoing updates, security monitoring, and minor content changes so you can stay focused on your work.</p>
+            <p>I don't lock you into a proprietary platform — I can help you get set up on reliable, affordable hosting (like Netlify or GitHub Pages) and provide ongoing support at a flat monthly rate.</p>
+            <ul class="service-block__includes" role="list">
+              <li>Monthly content updates (text, images, hours, etc.)</li>
+              <li>Security monitoring and patch management</li>
+              <li>Uptime monitoring with alerts</li>
+              <li>Hosting setup and configuration guidance</li>
+              <li>Priority support for any issues that come up</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <div class="container">
+      <h2 class="reveal">Have a project in mind?</h2>
+      <a href="contact.html" class="btn btn--white reveal reveal--d1">Get a Quote</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="images/wordmark.png" alt="Isotope Web Design" class="footer__wordmark">
+        <p>Premium websites for home improvement businesses.</p>
+      </div>
+      <nav class="footer__nav" aria-label="Footer navigation">
+        <div class="footer__col">
+          <h3>Pages</h3>
+          <ul role="list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h3>Services</h3>
+          <ul role="list">
+            <li><a href="services.html#design">Website Design</a></li>
+            <li><a href="services.html#development">Website Development</a></li>
+            <li><a href="services.html#branding">Branding &amp; Logos</a></li>
+            <li><a href="services.html#seo">SEO Basics</a></li>
+            <li><a href="services.html#maintenance">Maintenance</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h3>Contact</h3>
+          <ul role="list">
+            <li><a href="mailto:isotopewebdesign@gmail.com">isotopewebdesign@gmail.com</a></li>
+            <li><a href="contact.html">Get a Quote</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="footer__bottom">
+      <div class="container">
+        <p>&copy; 2025 Isotope Web Design. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

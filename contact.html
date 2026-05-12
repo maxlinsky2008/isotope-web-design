@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get a Quote | Isotope Web Design</title>
+  <meta name="description" content="Tell us about your project. We'll get back to you quickly with a clear, honest quote.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__brand">
+        <img src="images/wordmark.png" alt="Isotope Web Design" class="nav__wordmark">
+      </a>
+      <ul class="nav__links" role="list">
+        <li><a href="services.html" class="nav__link">Services</a></li>
+        <li><a href="portfolio.html" class="nav__link">Portfolio</a></li>
+        <li><a href="about.html" class="nav__link">About</a></li>
+      </ul>
+      <div class="nav__actions">
+        <a href="contact.html" class="btn btn--green btn--sm nav__cta-desktop">Get a Quote</a>
+        <button class="nav__toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__drawer" id="nav-drawer" aria-hidden="true">
+      <ul role="list">
+        <li><a href="services.html">Services</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="btn btn--green">Get a Quote</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="container">
+        <span class="page-hero__label reveal">Let's talk</span>
+        <h1 class="reveal reveal--d1">Get a Quote</h1>
+        <p class="page-hero__sub reveal reveal--d2">Fill out the form and I'll get back to you within one business day with a clear, honest quote. No obligation, no pressure.</p>
+      </div>
+    </section>
+
+    <!-- CONTACT FORM + INFO -->
+    <section class="contact-wrap">
+      <div class="container contact-wrap__inner">
+
+        <!-- FORM -->
+        <div>
+          <form class="contact-form" id="contact-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" placeholder="John Smith" required autocomplete="name">
+                <span class="error-msg">Please enter your name.</span>
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="john@example.com" required autocomplete="email">
+                <span class="error-msg">Please enter a valid email address.</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="business">Business Name (optional)</label>
+              <input type="text" id="business" name="business" placeholder="Smith Plumbing LLC" autocomplete="organization">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="project-type">Project Type</label>
+                <select id="project-type" name="project_type" required>
+                  <option value="" disabled selected>Select a service</option>
+                  <option value="website-design">Website Design</option>
+                  <option value="website-development">Website Development</option>
+                  <option value="design-and-development">Design + Development</option>
+                  <option value="branding">Branding / Logo</option>
+                  <option value="seo">SEO Basics</option>
+                  <option value="maintenance">Maintenance &amp; Hosting</option>
+                  <option value="other">Other / Not sure yet</option>
+                </select>
+                <span class="error-msg">Please select a project type.</span>
+              </div>
+              <div class="form-group">
+                <label for="budget">Budget Range</label>
+                <select id="budget" name="budget" required>
+                  <option value="" disabled selected>Select a range</option>
+                  <option value="under-500">Under $500</option>
+                  <option value="500-1000">$500 &ndash; $1,000</option>
+                  <option value="1000-2500">$1,000 &ndash; $2,500</option>
+                  <option value="2500-plus">$2,500+</option>
+                </select>
+                <span class="error-msg">Please select a budget range.</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="message">Tell me about your project</label>
+              <textarea id="message" name="message" placeholder="What does your business do? Do you have an existing website? What are your goals?" required></textarea>
+              <span class="error-msg">Please add a brief description.</span>
+            </div>
+            <div class="form-submit">
+              <button type="submit" class="btn btn--green">Send Message</button>
+            </div>
+          </form>
+
+          <!-- SUCCESS STATE -->
+          <div class="form-success" id="form-success" role="alert" aria-live="polite">
+            <h3>Message received.</h3>
+            <p>Thanks for reaching out. I'll review your project details and get back to you within one business day.</p>
+          </div>
+        </div>
+
+        <!-- CONTACT INFO -->
+        <aside class="contact-info reveal reveal--d2">
+          <h3 class="contact-info__heading">Prefer email?</h3>
+          <p>Reach out directly and I'll respond within one business day.</p>
+          <div class="contact-info__email-box">
+            <p>Email</p>
+            <a href="mailto:isotopewebdesign@gmail.com">isotopewebdesign@gmail.com</a>
+          </div>
+          <p class="contact-info__note">I typically respond within 24 hours on business days. For urgent inquiries, email directly is your fastest path.</p>
+        </aside>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="images/wordmark.png" alt="Isotope Web Design" class="footer__wordmark">
+        <p>Premium websites for home improvement businesses.</p>
+      </div>
+      <nav class="footer__nav" aria-label="Footer navigation">
+        <div class="footer__col">
+          <h3>Pages</h3>
+          <ul role="list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h3>Services</h3>
+          <ul role="list">
+            <li><a href="services.html#design">Website Design</a></li>
+            <li><a href="services.html#development">Website Development</a></li>
+            <li><a href="services.html#branding">Branding &amp; Logos</a></li>
+            <li><a href="services.html#seo">SEO Basics</a></li>
+            <li><a href="services.html#maintenance">Maintenance</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h3>Contact</h3>
+          <ul role="list">
+            <li><a href="mailto:isotopewebdesign@gmail.com">isotopewebdesign@gmail.com</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="footer__bottom">
+      <div class="container">
+        <p>&copy; 2025 Isotope Web Design. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
