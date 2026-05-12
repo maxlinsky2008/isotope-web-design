@@ -40,14 +40,37 @@
   </nav>
 
   <main>
-    <div class="portfolio-filler">
-      <div class="portfolio-filler__icon">
-        <img src="images/logo.png" alt="" aria-hidden="true">
+    <section class="portfolio-header">
+      <div class="container">
+        <h1 class="reveal">Portfolio</h1>
+        <p class="reveal">Websites built for home improvement businesses across the country.</p>
       </div>
-      <h1>Portfolio</h1>
-      <p>Case studies and project work coming soon.</p>
-    </div>
+    </section>
+
+    <section class="portfolio-section">
+      <div class="container">
+        <div class="portfolio-filter" id="portfolio-filter" role="group" aria-label="Filter projects by trade"></div>
+        <div class="portfolio-grid" id="portfolio-grid"></div>
+      </div>
+    </section>
   </main>
+
+  <!-- PORTFOLIO MODAL -->
+  <div class="portfolio-modal" id="portfolio-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal-title">
+    <div class="portfolio-modal__backdrop" id="modal-backdrop"></div>
+    <div class="portfolio-modal__inner">
+      <button class="portfolio-modal__close" id="modal-close" aria-label="Close preview">&times;</button>
+      <div class="portfolio-modal__info">
+        <span class="portfolio-modal__badge" id="modal-badge"></span>
+        <h2 class="portfolio-modal__title" id="modal-title"></h2>
+        <p class="portfolio-modal__desc" id="modal-desc"></p>
+        <a class="btn btn--green portfolio-modal__cta" id="modal-cta" href="#" target="_blank" rel="noopener">View Full Site</a>
+      </div>
+      <div class="portfolio-modal__preview">
+        <iframe id="modal-iframe" title="Website preview" tabindex="-1"></iframe>
+      </div>
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <footer class="footer">
@@ -93,6 +116,42 @@
     </div>
   </footer>
 
+  <script>
+  // Portfolio project data — add one entry per site you've built.
+  //
+  // slug:        unique ID matching the folder in portfolio-sites/ AND the image in images/portfolio/
+  // title:       project or client name shown in the preview modal
+  // trade:       "hvac" | "plumbing" | "landscaping" | "roofing" | "other"
+  // description: 1–2 sentence summary shown in the modal
+  // thumb:       path to the screenshot  (e.g. "images/portfolio/peak-hvac.jpg")
+  // live:        path to the site folder (e.g. "portfolio-sites/peak-hvac/index.html")
+  window.PORTFOLIO_PROJECTS = [
+    {
+      slug: "shumate",
+      title: "Shumate Heating & Air",
+      trade: "hvac",
+      description: "Multi-service site for one of Atlanta's largest home services companies — HVAC, plumbing, electrical, and handyman all under one brand.",
+      thumb: "images/portfolio/Demo 1 - Screenshot.png",
+      live: "portfolio-sites/Demo Website 1 - Shumate/index.html",
+    },
+    {
+      slug: "abc-plumbing",
+      title: "ABC Plumbing",
+      trade: "plumbing",
+      description: "A sharp, conversion-focused plumbing site with a clean light palette, bold typography, and dedicated pages for services, about, and contact.",
+      thumb: "images/portfolio/Demo 2 - Screenshot.png",
+      live: "portfolio-sites/Demo Website 2 - ABC Plumbing/index.html",
+    },
+    {
+      slug: "widget-hvac",
+      title: "Widget HVAC",
+      trade: "hvac",
+      description: "Full-featured HVAC site with a blog, full on-page SEO (sitemap, schema markup), and a premium dark aesthetic for an Atlanta-area contractor.",
+      thumb: "images/portfolio/Demo 3 - Screenshot.png",
+      live: "portfolio-sites/Demo Website 3 - Widget HVAC/index.html",
+    },
+  ];
+  </script>
   <script src="js/main.js"></script>
 </body>
 </html>

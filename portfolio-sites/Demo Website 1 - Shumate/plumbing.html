@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plumbing Services | Shumate Heating & Air — Atlanta Plumber</title>
+  <meta name="description" content="Shumate's expert plumbing services in Atlanta — leak repair, water heaters, drain cleaning, and 24/7 emergency plumbing. Call 678-SHUMATE.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: { 950: '#040e1c', 900: '#07152a', 800: '#0d1f3c', 700: '#0d2240', 600: '#133354' },
+            brand: { 50: '#f0f8ff', 100: '#daeeff', 300: '#7ec8ff', 400: '#4db8ff', 500: '#1a98f7', 600: '#0d7fd8', 700: '#0861a8' },
+            ember: { 400: '#ff9500', 500: '#e67e00', 600: '#c40000', 700: '#a30000' }
+          },
+          fontFamily: {
+            display: ['Bebas Neue', 'sans-serif'],
+            heading: ['Barlow Condensed', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: #07152a; color: #0d1f3c; margin: 0; overflow-x: hidden; }
+
+    .grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .nav-scrolled { background: rgba(4, 14, 28, 0.97) !important; box-shadow: 0 1px 0 rgba(26, 152, 247, 0.12); }
+
+    .nav-link {
+      position: relative; color: rgba(240, 248, 255, 0.65); font-family: 'DM Sans', sans-serif;
+      font-weight: 500; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase;
+      text-decoration: none; padding: 0.2rem 0; transition: color 0.2s ease;
+    }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px;
+      background: #1a98f7; transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .nav-link:hover { color: #f0f8ff; }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link.active { color: #f0f8ff; }
+    .nav-link.active::after { width: 100%; }
+
+    .btn-primary {
+      background: #c40000; color: white; font-family: 'DM Sans', sans-serif; font-weight: 600;
+      letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.8125rem;
+      padding: 0.8rem 1.625rem; border-radius: 2px; border: none; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 18px rgba(196, 0, 0, 0.28);
+    }
+    .btn-primary:hover { background: #a30000; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(196, 0, 0, 0.38); }
+
+    .btn-outline {
+      background: transparent; color: #f0f8ff; font-family: 'DM Sans', sans-serif; font-weight: 600;
+      letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.8125rem;
+      padding: 0.8rem 1.625rem; border-radius: 2px; border: 1.5px solid rgba(26, 152, 247, 0.45);
+      cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+    }
+    .btn-outline:hover { border-color: #1a98f7; background: rgba(26, 152, 247, 0.1); transform: translateY(-2px); }
+
+    .section-label {
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.7rem;
+      letter-spacing: 0.22em; text-transform: uppercase; color: #1a98f7;
+    }
+    .accent-line { width: 44px; height: 3px; background: linear-gradient(90deg, #1a98f7, #4db8ff); border-radius: 2px; }
+
+    .service-block {
+      background: white; border-radius: 2px; overflow: hidden;
+      box-shadow: 0 2px 14px rgba(7,21,42,0.07);
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+    }
+    .service-block:hover { transform: translateY(-5px); box-shadow: 0 16px 36px rgba(8,97,168,0.12), 0 4px 14px rgba(7,21,42,0.18); }
+
+    .footer-link { font-family: 'DM Sans', sans-serif; font-size: 0.875rem; color: rgba(240,248,255,0.38); text-decoration: none; transition: color 0.2s ease; }
+    .footer-link:hover { color: rgba(240,248,255,0.8); }
+
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up-1 { animation: fade-up 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both; }
+    .fade-up-2 { animation: fade-up 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both; }
+    .fade-up-3 { animation: fade-up 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.32s both; }
+    .fade-up-4 { animation: fade-up 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.46s both; }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+    .pulse-dot { position: relative; }
+    .pulse-dot::before {
+      content: ''; position: absolute; inset: -3px; border-radius: 50%;
+      background: #4ade80; animation: pulse-ring 1.6s ease-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-navy-900">
+
+  <!-- NAV -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+       style="background: rgba(7, 21, 42, 0.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex items-center justify-between" style="height: 64px;">
+
+        <a href="index.html" style="display: flex; align-items: center; gap: 0.625rem; text-decoration: none;">
+          <div style="width: 34px; height: 34px; background: #1a98f7; border-radius: 2px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+              <circle cx="12" cy="12" r="2.5" fill="white"/>
+            </svg>
+          </div>
+          <div style="line-height: 1;">
+            <div style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.05rem; color: #f0f8ff; letter-spacing: 0.04em;">SHUMATE</div>
+            <div style="font-family: 'DM Sans', sans-serif; font-size: 0.6rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #4db8ff;">Heating &amp; Air</div>
+          </div>
+        </a>
+
+        <div class="hidden lg:flex items-center" style="gap: 1.75rem;">
+          <a href="heating-cooling.html" class="nav-link">Heating &amp; A/C</a>
+          <a href="plumbing.html" class="nav-link active">Plumbing</a>
+          <a href="electrical.html" class="nav-link">Electrical</a>
+          <a href="handyman.html" class="nav-link">Handyman</a>
+          <a href="index.html#reviews" class="nav-link">Reviews</a>
+          <a href="index.html#contact" class="nav-link">Contact</a>
+        </div>
+
+        <a href="tel:6787486283" class="hidden lg:inline-flex btn-primary" style="font-size: 0.75rem; padding: 0.6rem 1.25rem;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.86 7.43 19.79 19.79 0 01.77 4.01 2 2 0 012.77 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.09 9.91a16 16 0 006 6l.91-.91a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 17.19z"/>
+          </svg>
+          678-SHUMATE
+        </a>
+
+        <button id="hamburger" class="lg:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
+          <span style="display: block; width: 22px; height: 2px; background: white; border-radius: 1px;"></span>
+          <span style="display: block; width: 22px; height: 2px; background: white; border-radius: 1px;"></span>
+          <span style="display: block; width: 22px; height: 2px; background: white; border-radius: 1px;"></span>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="lg:hidden flex-col px-6 pb-5 gap-0.5"
+         style="border-top: 1px solid rgba(26,152,247,0.12);">
+      <a href="heating-cooling.html" class="block py-3 nav-link">Heating &amp; A/C</a>
+      <a href="plumbing.html" class="block py-3 nav-link active">Plumbing</a>
+      <a href="electrical.html" class="block py-3 nav-link">Electrical</a>
+      <a href="handyman.html" class="block py-3 nav-link">Handyman</a>
+      <a href="index.html#reviews" class="block py-3 nav-link">Reviews</a>
+      <a href="index.html#contact" class="block py-3 nav-link">Contact</a>
+      <a href="tel:6787486283" class="btn-primary mt-3" style="justify-content: center;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.86 7.43 19.79 19.79 0 01.77 4.01 2 2 0 012.77 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.09 9.91a16 16 0 006 6l.91-.91a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 17.19z"/></svg>
+        Call 678-SHUMATE
+      </a>
+    </div>
+  </nav>
+
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden grain" style="background: #07152a; padding: 9rem 0 5.5rem;">
+    <div class="absolute inset-0 pointer-events-none" style="background:
+      radial-gradient(ellipse 65% 70% at 25% 55%, rgba(8,97,168,0.10) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 55% at 85% 25%, rgba(26,152,247,0.07) 0%, transparent 65%);"></div>
+    <div class="absolute inset-0 pointer-events-none" style="background-image: linear-gradient(rgba(26,152,247,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(26,152,247,0.05) 1px, transparent 1px); background-size: 64px 64px;"></div>
+    <div class="absolute bottom-0 right-0 overflow-hidden select-none pointer-events-none hidden xl:block"
+         style="font-family: 'Bebas Neue', sans-serif; font-size: 18vw; line-height: 0.82; color: rgba(8,97,168,0.04); white-space: nowrap;">PLUMBING</div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-6">
+      <div class="fade-up-1 flex items-center gap-2 mb-6">
+        <a href="index.html" style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:rgba(240,248,255,0.38);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='rgba(240,248,255,0.7)'" onmouseout="this.style.color='rgba(240,248,255,0.38)'">Home</a>
+        <span style="color:rgba(26,152,247,0.35);font-size:0.7rem;">›</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:rgba(240,248,255,0.55);">Plumbing</span>
+      </div>
+
+      <div class="fade-up-1 inline-flex items-center gap-2.5 mb-6"
+           style="background: rgba(8,97,168,0.10); border: 1px solid rgba(8,97,168,0.28); padding: 0.375rem 1rem; border-radius: 2px;">
+        <span class="pulse-dot" style="display: inline-block; width: 8px; height: 8px; background: #4ade80; border-radius: 50%;"></span>
+        <span style="font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(240,248,255,0.8);">Available 24 / 7 · Emergency Response</span>
+      </div>
+
+      <h1 class="fade-up-2" style="font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5rem, 8vw, 6.5rem); line-height: 0.92; letter-spacing: 0.01em; color: #f0f8ff; margin: 0 0 0.15em;">
+        PLUMBING<br>
+        <span style="color: #0861a8;">SERVICES</span>
+      </h1>
+
+      <p class="fade-up-3" style="font-family: 'DM Sans', sans-serif; font-size: 1.05rem; font-weight: 300; line-height: 1.72; color: rgba(240,248,255,0.55); max-width: 520px; margin: 1.375rem 0 2.25rem;">
+        From burst pipes to water heater installs, Shumate's licensed plumbers handle every job fast and right the first time — day or night across the Atlanta metro.
+      </p>
+
+      <div class="fade-up-4 flex flex-col sm:flex-row gap-3">
+        <a href="tel:6787486283" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.86 7.43 19.79 19.79 0 01.77 4.01 2 2 0 012.77 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.09 9.91a16 16 0 006 6l.91-.91a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 17.19z"/></svg>
+          Call 678-SHUMATE
+        </a>
+        <a href="index.html#contact" class="btn-outline">
+          Schedule Service
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- SERVICES CONTENT -->
+  <section style="background: #f0f6ff; padding: 5.5rem 0;">
+    <div class="max-w-7xl mx-auto px-6">
+
+      <div class="text-center mb-11">
+        <div class="section-label mb-3">What We Handle</div>
+        <div class="accent-line mx-auto mb-5"></div>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3rem);letter-spacing:-0.01em;color:#07152a;line-height:1.05;margin:0;">
+          Full-Service Plumbing
+        </h2>
+        <p style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;line-height:1.72;color:#3d5166;margin:0.75rem auto 0;max-width:480px;">
+          Repairs, installs, and emergency response — our licensed plumbers cover it all.
+        </p>
+      </div>
+
+      <div id="services-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
+
+        <!-- Repairs & Emergency -->
+        <div class="service-block">
+          <div style="height:4px;background:linear-gradient(90deg,#c40000,#e67e00);"></div>
+          <div style="padding:2rem 1.75rem;">
+            <div style="width:48px;height:48px;background:rgba(196,0,0,0.07);border-radius:2px;display:flex;align-items:center;justify-content:center;margin-bottom:1.125rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c40000" stroke-width="2" stroke-linecap="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </div>
+            <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.35rem;letter-spacing:0.03em;color:#07152a;margin:0 0 1rem;">REPAIRS &amp; EMERGENCY</h3>
+            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;">
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#c40000;flex-shrink:0;"></span>Emergency Plumbing (24/7)</li>
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#c40000;flex-shrink:0;"></span>Leak Detection &amp; Repair</li>
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#c40000;flex-shrink:0;"></span>Burst Pipe Repair</li>
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#c40000;flex-shrink:0;"></span>Water Pressure Diagnosis</li>
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#c40000;flex-shrink:0;"></span>Sewer Line Diagnosis</li>
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#c40000;flex-shrink:0;"></span>Shut-Off Valve Replacement</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Fixtures & Appliances -->
+        <div class="service-block">
+          <div style="height:4px;background:linear-gradient(90deg,#0861a8,#1a98f7);"></div>
+          <div style="padding:2rem 1.75rem;">
+            <div style="width:48px;height:48px;background:rgba(8,97,168,0.07);border-radius:2px;display:flex;align-items:center;justify-content:center;margin-bottom:1.125rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0861a8" stroke-width="2" stroke-linecap="round">
+                <path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/>
+                <path d="M12.56 6.6A10.97 10.97 0 0014 3.02c.5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a6.98 6.98 0 01-11.91 4.97"/>
+              </svg>
+            </div>
+            <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.35rem;letter-spacing:0.03em;color:#07152a;margin:0 0 1rem;">FIXTURES &amp; APPLIANCES</h3>
+            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;">
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#0861a8;flex-shrink:0;"></span>Water Heater Repair &amp; Installation</li>
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#0861a8;flex-shrink:0;"></span>Tankless Water Heater Install</li>
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#0861a8;flex-shrink:0;"></span>Faucet Repair &amp; Replacement</li>
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#0861a8;flex-shrink:0;"></span>Toilet Repair &amp; Replacement</li>
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#0861a8;flex-shrink:0;"></span>Garbage Disposal Installation</li>
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#0861a8;flex-shrink:0;"></span>Shower &amp; Tub Repair</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Drains & Pipes -->
+        <div class="service-block">
+          <div style="height:4px;background:linear-gradient(90deg,#1a98f7,#4db8ff);"></div>
+          <div style="padding:2rem 1.75rem;">
+            <div style="width:48px;height:48px;background:rgba(26,152,247,0.07);border-radius:2px;display:flex;align-items:center;justify-content:center;margin-bottom:1.125rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a98f7" stroke-width="2" stroke-linecap="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+            <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.35rem;letter-spacing:0.03em;color:#07152a;margin:0 0 1rem;">DRAINS &amp; PIPES</h3>
+            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;">
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#1a98f7;flex-shrink:0;"></span>Drain Cleaning &amp; Unclogging</li>
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#1a98f7;flex-shrink:0;"></span>Hydro-Jetting</li>
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#1a98f7;flex-shrink:0;"></span>Pipe Repair &amp; Replacement</li>
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#1a98f7;flex-shrink:0;"></span>Sewer Line Services</li>
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#1a98f7;flex-shrink:0;"></span>Water Line Installation</li>
+              <li style="font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#3d5166;display:flex;align-items:center;gap:0.5rem;"><span style="width:5px;height:5px;border-radius:50%;background:#1a98f7;flex-shrink:0;"></span>Backflow Prevention</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- CTA STRIP -->
+  <section style="background: #07152a; padding: 4.5rem 0; position: relative; overflow: hidden;">
+    <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(8,97,168,0.08) 0%, transparent 68%);"></div>
+    <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
+      <div class="section-label mb-4">Get Started Today</div>
+      <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3rem);letter-spacing:-0.01em;color:#f0f8ff;line-height:1.05;margin:0 0 1rem;">
+        Plumbing Problem? We're Ready.
+      </h2>
+      <p style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;line-height:1.72;color:rgba(240,248,255,0.5);margin:0 0 2rem;">
+        Don't let a small leak become a big problem. Call now or schedule at your convenience.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="tel:6787486283" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.86 7.43 19.79 19.79 0 01.77 4.01 2 2 0 012.77 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.09 9.91a16 16 0 006 6l.91-.91a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 17.19z"/></svg>
+          Call 678-SHUMATE
+        </a>
+        <a href="index.html#contact" class="btn-outline">
+          Schedule Service
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer style="background:#040e1c;border-top:1px solid rgba(26,152,247,0.09);padding:3rem 0 1.75rem;">
+    <div class="max-w-7xl mx-auto px-6">
+      <div id="footer-grid" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:2.5rem;margin-bottom:2.5rem;">
+
+        <div>
+          <div style="display:flex;align-items:center;gap:0.625rem;margin-bottom:1rem;">
+            <div style="width:32px;height:32px;background:#1a98f7;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07" stroke="white" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="12" r="2.5" fill="white"/></svg>
+            </div>
+            <div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;color:#f0f8ff;letter-spacing:0.04em;">SHUMATE</div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:0.58rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#4db8ff;line-height:1;">Heating &amp; Air</div>
+            </div>
+          </div>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.875rem;font-weight:300;line-height:1.72;color:rgba(240,248,255,0.3);max-width:260px;margin:0;">Atlanta's most trusted heating, cooling, plumbing, electrical, and handyman service. Available 24/7/365.</p>
+        </div>
+
+        <div>
+          <h4 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.8125rem;letter-spacing:0.14em;text-transform:uppercase;color:#f0f8ff;margin:0 0 1.125rem;">Services</h4>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;">
+            <li><a href="heating-cooling.html" class="footer-link">Heating &amp; Cooling</a></li>
+            <li><a href="plumbing.html" class="footer-link" style="color:rgba(240,248,255,0.65);">Plumbing</a></li>
+            <li><a href="electrical.html" class="footer-link">Electrical</a></li>
+            <li><a href="handyman.html" class="footer-link">Handyman</a></li>
+            <li><a href="index.html" class="footer-link">Back to Home</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.8125rem;letter-spacing:0.14em;text-transform:uppercase;color:#f0f8ff;margin:0 0 1.125rem;">Contact</h4>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.625rem;">
+            <li>
+              <a href="tel:6787486283" class="footer-link" style="display:flex;align-items:center;gap:0.4rem;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.86 7.43 19.79 19.79 0 01.77 4.01 2 2 0 012.77 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.09 9.91a16 16 0 006 6l.91-.91a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 17.19z"/></svg>
+                678-748-6283
+              </a>
+            </li>
+            <li class="footer-link" style="display:flex;align-items:flex-start;gap:0.4rem;cursor:default;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin-top:3px;flex-shrink:0;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>2805 Premiere Pkwy,<br>Duluth, GA 30097</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div style="border-top:1px solid rgba(26,152,247,0.07);padding-top:1.375rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;justify-content:space-between;">
+        <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:rgba(240,248,255,0.22);margin:0;">© 2024 Shumate Air Conditioning &amp; Heating. All rights reserved.</p>
+        <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:rgba(240,248,255,0.18);margin:0;">2805 Premiere Pkwy, Duluth, GA 30097</p>
+      </div>
+    </div>
+  </footer>
+
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('nav-scrolled', window.scrollY > 48);
+    }, { passive: true });
+
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('open');
+    });
+    document.getElementById('mobile-menu').querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'));
+    });
+
+    function applyResponsiveLayouts() {
+      const w = window.innerWidth;
+      const sg = document.getElementById('services-grid');
+      if (sg) sg.style.gridTemplateColumns = w < 700 ? '1fr' : w < 1024 ? '1fr 1fr' : 'repeat(3,1fr)';
+      const fg = document.getElementById('footer-grid');
+      if (fg) fg.style.gridTemplateColumns = w < 640 ? '1fr' : w < 900 ? '1fr 1fr' : '2fr 1fr 1fr';
+    }
+    applyResponsiveLayouts();
+    window.addEventListener('resize', applyResponsiveLayouts);
+  </script>
+
+</body>
+</html>
