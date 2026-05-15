@@ -1037,7 +1037,7 @@ p { max-width: 68ch; }
   gap: clamp(2rem, 5vw, 5rem);
 }
 .footer__brand { display: flex; flex-direction: column; gap: 1rem; }
-.footer__wordmark { height: 22px; width: auto; filter: brightness(0) saturate(0) invert(1); }
+.footer__wordmark { height: 22px; width: auto; align-self: flex-start; filter: brightness(0) saturate(0) invert(1); }
 .footer__brand p {
   font-size: 0.875rem;
   color: oklch(0.50 0.003 143);
