@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found | Isotope Web Design</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RNKSPRFZEL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-RNKSPRFZEL');
+  </script>
+  <style>
+    .error-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: var(--space-20) var(--space-6);
+      min-height: 60vh;
+    }
+    .error-page__code {
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 18vw, 9rem);
+      font-weight: 900;
+      line-height: 1;
+      color: var(--green-500);
+      margin: 0 0 var(--space-4);
+    }
+    .error-page__title {
+      font-family: var(--font-display);
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 var(--space-3);
+    }
+    .error-page__sub {
+      color: var(--text-muted);
+      max-width: 36ch;
+      margin: 0 0 var(--space-8);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="/index.html" class="nav__brand">
+        <img src="/images/wordmark.png" alt="Isotope Web Design" class="nav__wordmark">
+      </a>
+      <ul class="nav__links" role="list">
+        <li><a href="/services.html" class="nav__link">Services</a></li>
+        <li><a href="/portfolio.html" class="nav__link">Portfolio</a></li>
+        <li><a href="/about.html" class="nav__link">About</a></li>
+      </ul>
+      <div class="nav__actions">
+        <a href="/contact.html" class="btn btn--green btn--sm nav__cta-desktop">Get a Quote</a>
+        <button class="nav__toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__drawer" id="nav-drawer" aria-hidden="true">
+      <ul role="list">
+        <li><a href="/services.html">Services</a></li>
+        <li><a href="/portfolio.html">Portfolio</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html" class="btn btn--green">Get a Quote</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="error-page">
+      <p class="error-page__code">404</p>
+      <h1 class="error-page__title">Page not found</h1>
+      <p class="error-page__sub">The page you're looking for doesn't exist or has been moved.</p>
+      <a href="/index.html" class="btn btn--green">Back to Home</a>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="/images/wordmark.png" alt="Isotope Web Design" class="footer__wordmark">
+        <p>Premium websites for home improvement businesses.</p>
+      </div>
+      <nav class="footer__nav" aria-label="Footer navigation">
+        <div class="footer__col">
+          <h3>Pages</h3>
+          <ul role="list">
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/services.html">Services</a></li>
+            <li><a href="/portfolio.html">Portfolio</a></li>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h3>Services</h3>
+          <ul role="list">
+            <li><a href="/services.html">Website Design</a></li>
+            <li><a href="/services.html">Website Development</a></li>
+            <li><a href="/services.html">Branding &amp; Logos</a></li>
+            <li><a href="/services.html">SEO Basics</a></li>
+            <li><a href="/services.html">Maintenance</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h3>Contact</h3>
+          <ul role="list">
+            <li><a href="mailto:isotopewebdesign@gmail.com">isotopewebdesign@gmail.com</a></li>
+            <li><a href="/contact.html">Get a Quote</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

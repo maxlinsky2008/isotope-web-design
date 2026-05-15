@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /portfolio-sites/
+
+# Update domain below to match your actual deployed URL
+Sitemap: https://www.isotopewebdesign.com/sitemap.xml
