@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Get a Quote | Isotope Web Design</title>
-  <meta name="description" content="Tell us about your project. We'll get back to you quickly with a clear, honest quote.">
+  <title>Start Your Free Build | Isotope Web Design</title>
+  <meta name="description" content="Tell us about your local business and we'll build your website for free. You only pay to launch it and keep it live.">
   <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Isotope Web Design">
   <meta property="og:title" content="Get a Quote | Isotope Web Design">
-  <meta property="og:description" content="Tell us about your project. We'll get back to you quickly with a clear, honest quote.">
+  <meta property="og:description" content="Tell us about your local business and we'll build your website for free. You only pay to launch it and keep it live.">
   <meta property="og:url" content="https://www.isotopewebdesign.com/contact">
   <meta property="og:image" content="https://www.isotopewebdesign.com/images/wordmark.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Get a Quote | Isotope Web Design">
-  <meta name="twitter:description" content="Tell us about your project. We'll get back to you quickly with a clear, honest quote.">
+  <meta name="twitter:description" content="Tell us about your local business and we'll build your website for free. You only pay to launch it and keep it live.">
   <meta name="twitter:image" content="https://www.isotopewebdesign.com/images/wordmark.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,8 +64,8 @@
     <section class="page-hero">
       <div class="container">
         <span class="page-hero__label reveal">Let's talk</span>
-        <h1 class="reveal reveal--d1">Get a Quote</h1>
-        <p class="page-hero__sub reveal reveal--d2">Fill out the form and I'll get back to you within one business day with a clear, honest quote. No obligation, no pressure.</p>
+        <h1 class="reveal reveal--d1">Start your free build</h1>
+        <p class="page-hero__sub reveal reveal--d2">Tell me about your business and I'll start building your website — free. Prefer a custom quote instead? Use the same form. Either way, I'll get back to you within one business day. No obligation, no pressure.</p>
       </div>
     </section>
 
@@ -90,13 +90,14 @@
             </div>
             <div class="form-group">
               <label for="business">Business Name (optional)</label>
-              <input type="text" id="business" name="business" placeholder="Smith Plumbing LLC" autocomplete="organization">
+              <input type="text" id="business" name="business" placeholder="Smith &amp; Co." autocomplete="organization">
             </div>
             <div class="form-row">
               <div class="form-group">
                 <label for="project-type">Project Type</label>
                 <select id="project-type" name="project_type" required>
                   <option value="" disabled selected>Select a service</option>
+                  <option value="free-build">Free build + monthly plan</option>
                   <option value="website-design">Website Design</option>
                   <option value="website-development">Website Development</option>
                   <option value="design-and-development">Design + Development</option>
@@ -108,9 +109,9 @@
                 <span class="error-msg">Please select a project type.</span>
               </div>
               <div class="form-group">
-                <label for="budget">Budget Range</label>
-                <select id="budget" name="budget" required>
-                  <option value="" disabled selected>Select a range</option>
+                <label for="budget">Budget Range (optional)</label>
+                <select id="budget" name="budget">
+                  <option value="" selected>Not sure / free build</option>
                   <option value="under-500">Under $500</option>
                   <option value="500-1000">$500 &ndash; $1,000</option>
                   <option value="1000-2500">$1,000 &ndash; $2,500</option>
@@ -157,7 +158,7 @@
     <div class="container footer__inner">
       <div class="footer__brand">
         <img src="images/wordmark.png" alt="Isotope Web Design" class="footer__wordmark">
-        <p>Premium websites for home improvement businesses.</p>
+        <p>Premium websites for local businesses.</p>
       </div>
       <nav class="footer__nav" aria-label="Footer navigation">
         <div class="footer__col">
