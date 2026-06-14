@@ -20,6 +20,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <script>
+    /* Enable the scroll-scrub hero before first paint so the stepped copy
+       starts hidden (no flash). JS-off visitors keep a normal static hero. */
+    document.documentElement.classList.add('has-scrub');
+  </script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RNKSPRFZEL"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -61,37 +66,30 @@
   <main>
 
     <!-- HERO -->
-    <section class="hero">
-      <div class="container hero__inner">
-        <div class="hero__content reveal">
-          <span class="hero__label">Web Design for Local Business</span>
-          <h1 class="hero__headline">Your website,<br>built for free.</h1>
-          <p class="hero__sub">Isotope builds local businesses a premium, high-performing website at no upfront cost. See the finished site first — you only pay to launch it and keep it live.</p>
-          <div class="hero__ctas">
-            <a href="contact.html" class="btn btn--green">Claim Your Free Build</a>
-            <a href="portfolio.html" class="btn btn--outline">View Our Work</a>
+    <section class="hero" id="hero">
+      <div class="hero__pin">
+        <div class="hero__media" aria-hidden="true">
+          <video class="hero__video" muted playsinline preload="auto">
+            <source src="videos/hero-scroll-stop.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="container hero__inner">
+          <div class="hero__content">
+            <span class="hero__label hero__step" data-from="0">Web Design for Local Business</span>
+            <h1 class="hero__headline">
+              <span class="hero__line hero__step" data-from="0">Your website,</span>
+              <span class="hero__line hero__step" data-from="0.26">built for free.</span>
+            </h1>
+            <p class="hero__sub hero__step" data-from="0.48">Isotope builds local businesses a premium, high-performing website at no upfront cost. See the finished site first — you only pay to launch it and keep it live.</p>
+            <div class="hero__ctas hero__step" data-from="0.70">
+              <a href="contact.html" class="btn btn--green">Claim Your Free Build</a>
+              <a href="portfolio.html" class="btn btn--outline">View Our Work</a>
+            </div>
           </div>
         </div>
-        <div class="hero__visual reveal reveal--right">
-          <div class="hero__circle"></div>
-          <img src="images/logo.png" alt="" class="hero__logo" aria-hidden="true">
-        </div>
+        <span class="hero__cue" aria-hidden="true">Scroll</span>
       </div>
     </section>
-
-    <!-- TRUST STRIP -->
-    <div class="trust-strip">
-      <div class="container">
-        <span class="trust-strip__label">Built for</span>
-        <ul class="trust-strip__items" role="list">
-          <li>Home Services</li>
-          <li>Retail &amp; Shops</li>
-          <li>Restaurants</li>
-          <li>Salons &amp; Spas</li>
-          <li>Professional Services</li>
-        </ul>
-      </div>
-    </div>
 
     <!-- SERVICES PREVIEW -->
     <section class="section">

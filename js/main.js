@@ -54,24 +54,115 @@ document.querySelectorAll('.reveal').forEach(el => {
   if (!el.closest('.hero')) revealObserver.observe(el);
 });
 
-// Hero page-load animation
-const heroContent = document.querySelector('.hero__content');
-const heroVisual  = document.querySelector('.hero__visual');
-if (heroContent) {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      heroContent.classList.add('visible');
-      if (heroVisual) setTimeout(() => heroVisual.classList.add('visible'), 140);
-    });
-  });
+// Hero scroll-scrub — scroll depth drives the video timeline and reveals the
+// copy line-by-line. No autoplay, no loop: the animation only ever shows how
+// far you've scrolled into it.
+const heroEl    = document.getElementById('hero');
+const heroVideo = document.querySelector('.hero__video');
+const heroSteps = Array.from(document.querySelectorAll('.hero__step'));
+
+if (heroEl && heroVideo) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // Static fallback (CSS collapses the track): show all copy, rest on a
+    // fully-formed frame, no scrubbing.
+    heroSteps.forEach(step => step.classList.add('is-in'));
+    const showFinal = () => {
+      try { heroVideo.currentTime = Math.max(0, (heroVideo.duration || 0) - 0.05); } catch (e) {}
+    };
+    if (heroVideo.readyState >= 1) showFinal();
+    else heroVideo.addEventListener('loadedmetadata', showFinal, { once: true });
+  } else {
+    const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+
+    let duration   = 0;
+    let targetTime = 0;   // where the scroll position says the video should be
+    let shownTime  = 0;   // where it currently is (eased toward target)
+    let progress   = 0;
+    let rafId      = null;
+    let moved      = false;
+
+    function reveal() {
+      heroSteps.forEach(step => {
+        const from = parseFloat(step.dataset.from) || 0;
+        step.classList.toggle('is-in', progress >= from);
+      });
+      if (progress > 0.02 && !moved) {
+        moved = true;
+        heroEl.classList.add('hero--moved');
+      } else if (progress <= 0.02 && moved) {
+        moved = false;
+        heroEl.classList.remove('hero--moved');
+      }
+    }
+
+    function getProgress() {
+      const scrollable = heroEl.offsetHeight - window.innerHeight;
+      if (scrollable <= 0) return 0;
+      return clamp(-heroEl.getBoundingClientRect().top / scrollable, 0, 1);
+    }
+
+    // Ease the shown frame toward the scroll target, and only issue a new seek
+    // when the decoder is idle — paces seeks to what the browser can handle and
+    // makes the scrub glide/settle instead of snapping.
+    // Stop just shy of the very end — seeking to exactly duration can leave the
+    // video waiting on a frame that never paints (flicker / stuck 'ended').
+    const endTime = () => Math.max(0, duration - 0.05);
+
+    // Smoothing as a time constant (ms) rather than a fixed per-frame fraction,
+    // so the glide feels identical on 60Hz and 120Hz displays. ~150ms reads as
+    // the same gentle catch-up the old 0.12-per-frame lerp gave at 60fps, a hair
+    // more fluid. SEEK_EPS skips sub-frame seeks so the decoder isn't asked to
+    // jump to a spot it's effectively already at — fewer, cleaner seeks scrub
+    // smoother than a flood of imperceptible ones.
+    const SMOOTH_MS = 150;
+    const SEEK_EPS  = 0.008;
+    let   lastT     = 0;     // timestamp of the previous frame (for dt)
+    let   lastSeek  = -1;    // last currentTime we actually issued
+
+    function loop(now) {
+      const dt = lastT ? Math.min(now - lastT, 50) : 16.7;   // cap after idle gaps
+      lastT = now;
+
+      const ease = 1 - Math.exp(-dt / SMOOTH_MS);
+      shownTime += (targetTime - shownTime) * ease;
+      if (Math.abs(targetTime - shownTime) < 0.004) shownTime = targetTime;
+
+      if (duration && !heroVideo.seeking) {
+        const t = clamp(shownTime, 0, endTime());
+        if (Math.abs(t - lastSeek) > SEEK_EPS || t === targetTime) {
+          try { heroVideo.currentTime = t; lastSeek = t; } catch (e) {}
+        }
+      }
+      rafId = Math.abs(targetTime - shownTime) > 0.004 ? requestAnimationFrame(loop) : null;
+    }
+
+    function onScroll() {
+      progress   = getProgress();
+      targetTime = progress * endTime();
+      reveal();
+      if (rafId === null) { lastT = 0; rafId = requestAnimationFrame(loop); }
+    }
+
+    function start() {
+      duration = heroVideo.duration || 0;
+      try { heroVideo.currentTime = 0; } catch (e) {}   // paint the first frame
+      onScroll();
+    }
+    if (heroVideo.readyState >= 1) start();
+    else heroVideo.addEventListener('loadedmetadata', start, { once: true });
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    reveal();   // set the resting state immediately (label + first line)
+  }
 }
 
-// Portfolio
-const portfolioGrid   = document.getElementById('portfolio-grid');
-const portfolioFilter = document.getElementById('portfolio-filter');
-const portfolioModal  = document.getElementById('portfolio-modal');
+// Portfolio — 3D circular gallery (auto-rotate + drag, with a mobile fallback)
+const gallery        = document.getElementById('portfolio-gallery');
+const galleryStage   = document.getElementById('gallery-stage');
+const portfolioModal = document.getElementById('portfolio-modal');
 
-if (portfolioGrid && typeof window.PORTFOLIO_PROJECTS !== 'undefined') {
+if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined') {
   const TRADE_LABELS = {
     hvac: 'HVAC', plumbing: 'Plumbing', landscaping: 'Landscaping',
     roofing: 'Roofing', other: 'Other',
@@ -83,56 +174,203 @@ if (portfolioGrid && typeof window.PORTFOLIO_PROJECTS !== 'undefined') {
   const modalDesc   = document.getElementById('modal-desc');
   const modalCta    = document.getElementById('modal-cta');
 
-  // Build filter tabs only for trades that have at least one project
-  const activeTrades = ['hvac', 'plumbing', 'landscaping', 'roofing', 'other']
-    .filter(t => projects.some(p => p.trade === t));
+  const mobileQuery  = window.matchMedia('(max-width: 640px)');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  if (activeTrades.length > 0) {
-    [['all', 'All'], ...activeTrades.map(t => [t, TRADE_LABELS[t]])].forEach(([val, label]) => {
-      const btn = document.createElement('button');
-      btn.className = 'portfolio-filter__btn' + (val === 'all' ? ' active' : '');
-      btn.dataset.filter = val;
-      btn.textContent = label;
-      portfolioFilter.appendChild(btn);
-    });
-  }
+  // Coverflow tuning — one "step" = the distance to the next card.
+  const SPREAD       = 215;    // px a neighbor sits to the side of the focus
+  const TILT         = 50;     // deg a neighbor is angled inward
+  const DEPTH        = 150;    // px a neighbor is pushed back
+  const SCALE_STEP   = 0.07;   // shrink per step away from the focus
+  const OPACITY_STEP = 0.32;   // dim per step away from the focus
+  const STEP_EVERY   = 2600;   // ms a card rests centered before advancing
+  const EASE         = 0.10;   // how snappily the glide settles on a card
+  const DRAG_PX      = 260;    // pixels dragged to move the focus by one card
 
-  // Render cards
-  if (projects.length === 0) {
-    portfolioGrid.innerHTML = '<div class="portfolio-empty"><p>Projects coming soon.</p></div>';
-  } else {
+  let cards    = [];
+  let position = 0;       // fractional focus index; integer = a card centered
+  let target   = 0;       // the card the gallery is gliding toward
+  let dwell    = 0;       // ms the current card has been centered
+  let lastT    = 0;       // timestamp of the previous frame
+  let rafId    = null;
+  let isMobile = mobileQuery.matches;
+
+  // Drag state
+  let dragging    = false;
+  let dragMoved   = false;
+  let lastX       = 0;
+  let autoPaused  = false;
+  let resumeTimer = null;
+
+  function buildCards() {
+    galleryStage.innerHTML = '';
+    cards = [];
+    gallery.classList.remove('portfolio-empty');
+
+    if (projects.length === 0) {
+      galleryStage.innerHTML = '<div class="portfolio-empty"><p>Projects coming soon.</p></div>';
+      return;
+    }
+
     projects.forEach(p => {
       const card = document.createElement('article');
-      card.className = 'portfolio-card reveal';
-      card.dataset.trade = p.trade;
+      card.className = 'portfolio-card';
       card.innerHTML = `
         <div class="portfolio-card__thumb">
-          <img src="${p.thumb}" alt="${p.title} website screenshot" loading="lazy">
+          <img src="${p.thumb}" alt="${p.title} website screenshot" loading="lazy" draggable="false">
           <div class="portfolio-card__overlay"><span>View Project</span></div>
         </div>
         <div class="portfolio-card__body">
           <span class="portfolio-card__trade">${TRADE_LABELS[p.trade] || p.trade}</span>
           <h3 class="portfolio-card__title">${p.title}</h3>
         </div>`;
-      card.addEventListener('click', () => openModal(p));
-      portfolioGrid.appendChild(card);
+      card.addEventListener('click', () => {
+        if (dragMoved) return;          // ignore the click that ends a drag
+        openModal(p);
+      });
+      galleryStage.appendChild(card);
+      cards.push(card);
     });
-    portfolioGrid.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   }
 
-  // Filter
-  portfolioFilter.addEventListener('click', e => {
-    const btn = e.target.closest('.portfolio-filter__btn');
-    if (!btn) return;
-    portfolioFilter.querySelectorAll('.portfolio-filter__btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const filter = btn.dataset.filter;
-    portfolioGrid.querySelectorAll('.portfolio-card').forEach(card => {
-      card.classList.toggle('hidden', filter !== 'all' && card.dataset.trade !== filter);
-    });
-  });
+  // Place every card relative to the current focus, coverflow-style: the
+  // focused card faces us; the two neighbors angle inward and sit just to the
+  // sides so their inner corners peek out. A card rotating past a neighbor
+  // folds back behind the focus and fades, so the loop is seamless + infinite.
+  function render() {
+    const n = cards.length;
+    const denom = n / 2 - 1;   // span over which a far card folds away
+    cards.forEach((card, i) => {
+      let rel = (i - position) % n;          // signed steps to the focus, wrapped
+      if (rel >  n / 2) rel -= n;
+      if (rel < -n / 2) rel += n;
+      const a = Math.abs(rel);
+      const s = rel < 0 ? -1 : 1;
 
-  // Modal open/close
+      let x, z, rot, opacity, scale;
+      if (a <= 1) {
+        x = s * a * SPREAD;
+        z = -a * DEPTH;
+        rot = s * a * TILT;
+        opacity = 1 - a * OPACITY_STEP;
+        scale = 1 - a * SCALE_STEP;
+      } else {
+        // beyond the nearest neighbor: fold back behind the focus and fade out
+        const t = denom > 0 ? Math.min(1, (a - 1) / denom) : 1;
+        x = s * SPREAD * (1 - t);
+        z = -DEPTH * (1 + t * 2);
+        rot = s * (TILT + t * 25);
+        opacity = (1 - OPACITY_STEP) * (1 - t);
+        scale = (1 - SCALE_STEP) * (1 - t * 0.25);
+      }
+
+      card.style.transform =
+        `translateX(${x}px) translateZ(${z}px) rotateY(${rot}deg) scale(${scale})`;
+      card.style.opacity = Math.max(0, opacity).toFixed(3);
+    });
+  }
+
+  function tick(now) {
+    const dt = lastT ? now - lastT : 16;
+    lastT = now;
+
+    if (!dragging && !autoPaused && !reduceMotion.matches) {
+      dwell += dt;
+      // once a card has been centered long enough, advance to the next
+      if (dwell >= STEP_EVERY && Math.abs(target - position) < 0.01) {
+        dwell = 0;
+        target += 1;
+      }
+    }
+    if (!dragging) {
+      position += (target - position) * EASE;   // ease/settle onto the target card
+      if (Math.abs(target - position) < 0.0005) position = target;
+    }
+    render();
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function startRing() {
+    stopRing();
+    lastT = 0;
+    render();
+    rafId = requestAnimationFrame(tick);
+  }
+  function stopRing() {
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+  }
+
+  // Drag-to-spin (desktop / tablet)
+  function onPointerDown(e) {
+    if (isMobile) return;
+    dragging = true;
+    dragMoved = false;
+    autoPaused = true;
+    lastX = e.clientX;
+    gallery.classList.add('is-dragging');
+    // No setPointerCapture: window-level move/up listeners already track the
+    // drag everywhere, and capture can divert the closing click off the card.
+  }
+  function onPointerMove(e) {
+    if (!dragging) return;
+    const dx = e.clientX - lastX;
+    if (Math.abs(dx) > 2) dragMoved = true;
+    lastX = e.clientX;
+    position -= dx / DRAG_PX;   // drag right → the previous card swings in
+  }
+  function onPointerUp() {
+    if (!dragging) return;
+    dragging = false;
+    gallery.classList.remove('is-dragging');
+    target = Math.round(position);   // settle onto the nearest card
+    dwell = 0;
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(() => { autoPaused = false; }, 1600);
+    // clear dragMoved after the trailing click has been handled
+    requestAnimationFrame(() => requestAnimationFrame(() => { dragMoved = false; }));
+  }
+
+  function bindDrag() {
+    gallery.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointercancel', onPointerUp);
+    gallery.addEventListener('dragstart', preventDrag);
+  }
+  function unbindDrag() {
+    gallery.removeEventListener('pointerdown', onPointerDown);
+    window.removeEventListener('pointermove', onPointerMove);
+    window.removeEventListener('pointerup', onPointerUp);
+    window.removeEventListener('pointercancel', onPointerUp);
+    gallery.removeEventListener('dragstart', preventDrag);
+  }
+  function preventDrag(e) { e.preventDefault(); }
+
+  function applyMode() {
+    isMobile = mobileQuery.matches;
+    buildCards();
+    if (cards.length === 0) { stopRing(); unbindDrag(); return; }
+    unbindDrag();
+    if (isMobile) {
+      stopRing();
+      cards.forEach(c => { c.style.transform = ''; c.style.opacity = ''; });
+      galleryStage.style.removeProperty('--ring-rot');
+    } else {
+      bindDrag();
+      startRing();
+    }
+  }
+
+  applyMode();
+
+  // Re-evaluate on breakpoint changes (resize / orientation)
+  if (mobileQuery.addEventListener) {
+    mobileQuery.addEventListener('change', applyMode);
+  } else if (mobileQuery.addListener) {
+    mobileQuery.addListener(applyMode); // Safari < 14
+  }
+
+  // Modal open/close — live-preview behavior preserved
   function openModal(project) {
     modalTitle.textContent = project.title;
     modalBadge.textContent = TRADE_LABELS[project.trade] || project.trade;
