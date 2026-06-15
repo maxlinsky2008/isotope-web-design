@@ -213,6 +213,9 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   const projects    = window.PORTFOLIO_PROJECTS;
+  const galleryDots = document.getElementById('gallery-dots');
+  const prevBtn     = document.getElementById('gallery-prev');
+  const nextBtn     = document.getElementById('gallery-next');
   const modalIframe = document.getElementById('modal-iframe');
   const modalTitle  = document.getElementById('modal-title');
   const modalBadge  = document.getElementById('modal-badge');
@@ -220,23 +223,20 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
   const modalCta    = document.getElementById('modal-cta');
 
   const mobileQuery  = window.matchMedia('(max-width: 640px)');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   // Coverflow tuning — one "step" = the distance to the next card.
-  const SPREAD       = 215;    // px a neighbor sits to the side of the focus
+  const SPREAD       = 340;    // px a neighbor sits to the side of the focus
   const TILT         = 50;     // deg a neighbor is angled inward
-  const DEPTH        = 150;    // px a neighbor is pushed back
+  const DEPTH        = 190;    // px a neighbor is pushed back
   const SCALE_STEP   = 0.07;   // shrink per step away from the focus
-  const OPACITY_STEP = 0.32;   // dim per step away from the focus
-  const STEP_EVERY   = 2600;   // ms a card rests centered before advancing
   const EASE         = 0.10;   // how snappily the glide settles on a card
   const DRAG_PX      = 260;    // pixels dragged to move the focus by one card
 
   let cards    = [];
+  let dots     = [];
+  let activeDot = -1;     // index currently flagged active (avoids redundant DOM writes)
   let position = 0;       // fractional focus index; integer = a card centered
   let target   = 0;       // the card the gallery is gliding toward
-  let dwell    = 0;       // ms the current card has been centered
-  let lastT    = 0;       // timestamp of the previous frame
   let rafId    = null;
   let isMobile = mobileQuery.matches;
 
@@ -244,8 +244,6 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
   let dragging    = false;
   let dragMoved   = false;
   let lastX       = 0;
-  let autoPaused  = false;
-  let resumeTimer = null;
 
   function buildCards() {
     galleryStage.innerHTML = '';
@@ -266,10 +264,12 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
         <div class="portfolio-card__poster" style="--accent:${esc(p.accent || '#1E90FF')}">
           <div class="poster__top">
             <span class="poster__icon">${icon}</span>
-            <span class="poster__cat">${esc(label)}</span>
+            <span class="poster__brand">${esc(p.title)}</span>
           </div>
-          <span class="poster__mono" aria-hidden="true">${esc(p.monogram || '')}</span>
-          <h3 class="poster__name">${esc(p.title)}</h3>
+          <h3 class="poster__headline">
+            <span class="poster__type">${esc(label)}</span>
+            <span class="poster__kind">Demo Website</span>
+          </h3>
           <div class="portfolio-card__overlay"><span>View Project</span></div>
         </div>`;
       card.addEventListener('click', () => {
@@ -279,6 +279,62 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
       galleryStage.appendChild(card);
       cards.push(card);
     });
+
+    buildDots();
+  }
+
+  // One dot per project; clicking a dot glides the focus straight to it.
+  function buildDots() {
+    if (!galleryDots) return;
+    galleryDots.innerHTML = '';
+    dots = [];
+    activeDot = -1;
+    projects.forEach((p, i) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'gallery__dot';
+      dot.setAttribute('role', 'tab');
+      dot.setAttribute('aria-label', p.title);
+      dot.setAttribute('aria-selected', 'false');
+      dot.addEventListener('click', () => goTo(target + shortestDelta(i)));
+      galleryDots.appendChild(dot);
+      dots.push(dot);
+    });
+  }
+
+  // Focused card index, normalized into [0, n).
+  function focusIndex() {
+    const n = cards.length;
+    return n ? ((Math.round(position) % n) + n) % n : 0;
+  }
+
+  // Steps from the current target to card `i`, taking the short way around the ring.
+  function shortestDelta(i) {
+    const n = cards.length;
+    let d = (i - Math.round(target)) % n;
+    if (d >  n / 2) d -= n;
+    if (d < -n / 2) d += n;
+    return d;
+  }
+
+  // Glide to an absolute target index (drag-free; the easing in tick() animates there).
+  function goTo(i) {
+    target = i;
+  }
+
+  function updateDots() {
+    if (!dots.length) return;
+    const idx = focusIndex();
+    if (idx === activeDot) return;       // only touch the DOM when the focus changes
+    if (dots[activeDot]) {
+      dots[activeDot].classList.remove('is-active');
+      dots[activeDot].setAttribute('aria-selected', 'false');
+    }
+    if (dots[idx]) {
+      dots[idx].classList.add('is-active');
+      dots[idx].setAttribute('aria-selected', 'true');
+    }
+    activeDot = idx;
   }
 
   // Place every card relative to the current focus, coverflow-style: the
@@ -300,7 +356,7 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
         x = s * a * SPREAD;
         z = -a * DEPTH;
         rot = s * a * TILT;
-        opacity = 1 - a * OPACITY_STEP;
+        opacity = 1;
         scale = 1 - a * SCALE_STEP;
       } else {
         // beyond the nearest neighbor: fold back behind the focus and fade out
@@ -308,7 +364,7 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
         x = s * SPREAD * (1 - t);
         z = -DEPTH * (1 + t * 2);
         rot = s * (TILT + t * 25);
-        opacity = (1 - OPACITY_STEP) * (1 - t);
+        opacity = 1 - t;
         scale = (1 - SCALE_STEP) * (1 - t * 0.25);
       }
 
@@ -316,20 +372,12 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
         `translateX(${x}px) translateZ(${z}px) rotateY(${rot}deg) scale(${scale})`;
       card.style.opacity = Math.max(0, opacity).toFixed(3);
     });
+    updateDots();
   }
 
-  function tick(now) {
-    const dt = lastT ? now - lastT : 16;
-    lastT = now;
-
-    if (!dragging && !autoPaused && !reduceMotion.matches) {
-      dwell += dt;
-      // once a card has been centered long enough, advance to the next
-      if (dwell >= STEP_EVERY && Math.abs(target - position) < 0.01) {
-        dwell = 0;
-        target += 1;
-      }
-    }
+  function tick() {
+    // No auto-advance: the focus only moves when the user drags, taps an arrow,
+    // or picks a dot. The loop just eases the glide onto the chosen target.
     if (!dragging) {
       position += (target - position) * EASE;   // ease/settle onto the target card
       if (Math.abs(target - position) < 0.0005) position = target;
@@ -340,7 +388,6 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
 
   function startRing() {
     stopRing();
-    lastT = 0;
     render();
     rafId = requestAnimationFrame(tick);
   }
@@ -353,7 +400,6 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
     if (isMobile) return;
     dragging = true;
     dragMoved = false;
-    autoPaused = true;
     lastX = e.clientX;
     gallery.classList.add('is-dragging');
     // No setPointerCapture: window-level move/up listeners already track the
@@ -371,9 +417,6 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
     dragging = false;
     gallery.classList.remove('is-dragging');
     target = Math.round(position);   // settle onto the nearest card
-    dwell = 0;
-    clearTimeout(resumeTimer);
-    resumeTimer = setTimeout(() => { autoPaused = false; }, 1600);
     // clear dragMoved after the trailing click has been handled
     requestAnimationFrame(() => requestAnimationFrame(() => { dragMoved = false; }));
   }
@@ -408,6 +451,11 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
       startRing();
     }
   }
+
+  // Arrow buttons step the focus one card at a time (the ring wraps both ways).
+  // Hidden on mobile via CSS, so these only fire in the coverflow view.
+  if (prevBtn) prevBtn.addEventListener('click', () => goTo(target - 1));
+  if (nextBtn) nextBtn.addEventListener('click', () => goTo(target + 1));
 
   applyMode();
 

@@ -889,9 +889,9 @@ p { max-width: 68ch; }
    JS sets each card's rotateY()/translateZ() + opacity inline. */
 .gallery {
   position: relative;
-  height: clamp(520px, 66vh, 660px);
+  height: clamp(620px, 76vh, 780px);
   margin-top: 1rem;
-  perspective: 2000px;
+  perspective: 2200px;
   overflow: hidden;
   cursor: grab;
   touch-action: pan-y;
@@ -933,10 +933,10 @@ p { max-width: 68ch; }
   position: absolute;
   left: 0;
   top: 0;
-  width: 300px;
-  height: 420px;
-  margin-left: -150px;
-  margin-top: -210px;
+  width: 400px;
+  height: 540px;
+  margin-left: -200px;
+  margin-top: -270px;
   display: flex;
   flex-direction: column;
   backface-visibility: hidden;
@@ -953,7 +953,7 @@ p { max-width: 68ch; }
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: 1.625rem 1.5rem 1.75rem;
+  padding: 2rem 1.875rem 2.125rem;
   color: #fff;
   isolation: isolate;
   overflow: hidden;
@@ -985,32 +985,39 @@ p { max-width: 68ch; }
   color: rgba(255,255,255,0.92);
 }
 .poster__icon svg { width: 100%; height: 100%; }
-.poster__cat {
+/* business name — demoted to a small kicker at the top */
+.poster__brand {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   text-transform: uppercase;
   letter-spacing: 0.13em;
-  color: rgba(255,255,255,0.88);
+  color: rgba(255,255,255,0.82);
 }
-.poster__mono {
-  margin-top: auto;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 4.75rem;
-  line-height: 0.86;
-  letter-spacing: -0.04em;
-  color: rgba(255,255,255,0.96);
+/* business TYPE — the hero of the card */
+.poster__headline {
+  margin: auto 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
   text-shadow: 0 2px 24px rgba(0,0,0,0.18);
 }
-.poster__name {
-  margin-top: 0.65rem;
+.poster__type {
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.5rem;
-  line-height: 1.12;
-  letter-spacing: -0.01em;
+  font-weight: 800;
+  font-size: clamp(2.6rem, 5.4vw, 3.5rem);
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+  color: #fff;
   text-wrap: balance;
+}
+.poster__kind {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.9);
 }
 .portfolio-card:hover .portfolio-card__poster::before { background: linear-gradient(125deg, rgba(255,255,255,0.16) 0%, transparent 46%); }
 
@@ -1039,6 +1046,62 @@ p { max-width: 68ch; }
   text-align: center;
   padding: 5rem 1rem;
   color: var(--mid);
+}
+
+/* Prev / next arrows — sit just inside the gallery edges, above the cards. */
+.gallery__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  transform: translateY(-50%);
+  width: 3.25rem;
+  height: 3.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink, #1a1a1a);
+  box-shadow: 0 2px 6px oklch(0 0 0 / 0.08), 0 12px 28px oklch(0 0 0 / 0.16);
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s, background 0.18s, color 0.18s;
+}
+.gallery__arrow:hover {
+  background: var(--green);
+  color: #fff;
+  border-color: transparent;
+  transform: translateY(-50%) scale(1.06);
+}
+.gallery__arrow:active { transform: translateY(-50%) scale(0.96); }
+.gallery__arrow:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+.gallery__arrow svg { width: 1.5rem; height: 1.5rem; }
+.gallery__arrow--prev { left: clamp(0.5rem, 3vw, 2.5rem); }
+.gallery__arrow--next { right: clamp(0.5rem, 3vw, 2.5rem); }
+
+/* Dot indicators — one per project; the active dot tracks the focused card. */
+.gallery__dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.625rem;
+  margin-top: 1.5rem;
+}
+.gallery__dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  padding: 0;
+  border-radius: 50%;
+  border: none;
+  background: oklch(0 0 0 / 0.18);
+  cursor: pointer;
+  transition: transform 0.18s, background 0.18s;
+}
+.gallery__dot:hover { background: oklch(0 0 0 / 0.34); transform: scale(1.15); }
+.gallery__dot:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+.gallery__dot.is-active {
+  background: var(--green);
+  transform: scale(1.25);
 }
 
 /* Mobile: flatten the ring into a tap-friendly, swipeable scroll-snap carousel. */
@@ -1079,6 +1142,10 @@ p { max-width: 68ch; }
     scroll-snap-align: center;
   }
   .gallery .portfolio-card__poster { aspect-ratio: 5 / 7; flex: initial; }
+
+  /* Mobile already swipes via scroll-snap — hide the coverflow controls. */
+  .gallery__arrow,
+  .gallery__dots { display: none; }
 
   .gallery__hint { margin-top: 1.25rem; }
 }
