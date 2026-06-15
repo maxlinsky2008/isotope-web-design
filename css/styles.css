@@ -357,12 +357,12 @@ p { max-width: 68ch; }
                0 2px 22px oklch(0.99 0.002 143 / 0.8);
 }
 .hero__sub {
-  font-size: 1.0625rem;
-  /* darker than --mid: gray subtext washed out over the light end frame */
-  color: oklch(0.34 0.008 143);
+  font-size: clamp(1.25rem, 1.85vw, 1.5rem);
+  /* darker than --mid for stronger presence over the light end frame */
+  color: oklch(0.29 0.011 143);
   font-weight: 500;
-  line-height: 1.7;
-  max-width: 44ch;
+  line-height: 1.6;
+  max-width: 46ch;
   margin-inline: auto;
   text-shadow: 0 0 1px oklch(0.99 0.002 143 / 0.9),
                0 1px 10px oklch(0.99 0.002 143 / 0.95);
@@ -944,21 +944,75 @@ p { max-width: 68ch; }
   transition: box-shadow 0.22s;
 }
 
-.portfolio-card__thumb {
+/* Branded "poster tile" — a uniform, screenshot-free card generated per site.
+   The brand color (--accent, set inline) drives a duotone gradient; every card
+   shares the same layout so the carousel reads as one cohesive set. */
+.portfolio-card__poster {
   position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1.625rem 1.5rem 1.75rem;
+  color: #fff;
+  isolation: isolate;
   overflow: hidden;
-  background: var(--green-tint);
+  background:
+    radial-gradient(125% 90% at 16% 10%,
+      color-mix(in oklab, var(--accent), #fff 26%), transparent 58%),
+    linear-gradient(157deg,
+      var(--accent) 0%,
+      color-mix(in oklab, var(--accent), #000 52%) 100%);
 }
-.gallery .portfolio-card__thumb { flex: 1 1 auto; min-height: 0; }
-.portfolio-card__thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-  display: block;
-  transition: transform 0.35s;
+/* faint diagonal sheen for depth */
+.portfolio-card__poster::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(125deg, rgba(255,255,255,0.10) 0%, transparent 42%);
 }
-.portfolio-card:hover .portfolio-card__thumb img { transform: scale(1.04); }
+
+.poster__top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.poster__icon {
+  display: inline-flex;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: rgba(255,255,255,0.92);
+}
+.poster__icon svg { width: 100%; height: 100%; }
+.poster__cat {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: rgba(255,255,255,0.88);
+}
+.poster__mono {
+  margin-top: auto;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 4.75rem;
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  color: rgba(255,255,255,0.96);
+  text-shadow: 0 2px 24px rgba(0,0,0,0.18);
+}
+.poster__name {
+  margin-top: 0.65rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.portfolio-card:hover .portfolio-card__poster::before { background: linear-gradient(125deg, rgba(255,255,255,0.16) 0%, transparent 46%); }
 
 .portfolio-card__overlay {
   position: absolute;
@@ -979,24 +1033,6 @@ p { max-width: 68ch; }
   border: 1.5px solid rgba(255,255,255,0.55);
   padding: 0.5rem 1.25rem;
   border-radius: 2rem;
-}
-
-.portfolio-card__body { padding: 0.875rem 1.125rem 1rem; flex: 0 0 auto; }
-.portfolio-card__trade {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--green);
-  margin-bottom: 0.25rem;
-}
-.portfolio-card__title {
-  font-family: var(--font-display);
-  font-size: 1.0625rem;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.3;
 }
 
 .portfolio-empty {
@@ -1042,7 +1078,7 @@ p { max-width: 68ch; }
     transform: none !important;
     scroll-snap-align: center;
   }
-  .gallery .portfolio-card__thumb { aspect-ratio: 16 / 10; flex: initial; }
+  .gallery .portfolio-card__poster { aspect-ratio: 5 / 7; flex: initial; }
 
   .gallery__hint { margin-top: 1.25rem; }
 }

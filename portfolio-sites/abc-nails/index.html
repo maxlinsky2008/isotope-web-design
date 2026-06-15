@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ABC Nails — Premium Nail Salon & Spa</title>
+  <meta name="description" content="ABC Nails is a refined nail salon and hand spa. Manicures, pedicures, gel, nail art and luxury hand treatments in a calm, beautiful setting. Book your appointment today." />
+
+  <!-- Favicon (inline SVG) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231E3A47'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' fill='%23F5E9DA' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E" />
+
+  <!-- Fonts: Fraunces (display serif) + Jost (body sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Decorative botanical SVG, reused via <use> -->
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+    <defs>
+      <g id="branch">
+        <path d="M120 4C92 30 70 70 58 116c-8 31-9 64-3 96" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M96 44c-18-6-37-2-52 10 16 9 35 11 52 4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M80 86c-20-4-40 3-54 18 18 7 39 4 56-7" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M66 132c-20-2-39 7-51 23 18 5 39 0 55-12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M104 24c14-9 31-12 49-8-11 14-28 22-46 21" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </g>
+    </defs>
+  </svg>
+
+  <!-- ============================= HEADER ============================= -->
+  <header class="site-header" id="top">
+    <div class="container nav-shell">
+      <a class="brand" href="#top" aria-label="ABC Nails home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="44" height="44">
+            <circle cx="24" cy="24" r="22.5" fill="none" stroke="currentColor" stroke-width="1"/>
+            <text x="24" y="29" text-anchor="middle" class="brand-mark-letter">A</text>
+          </svg>
+        </span>
+        <span class="brand-word">ABC <em>Nails</em></span>
+      </a>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Primary">
+        <a href="#top">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+        <a class="btn btn-primary nav-cta" href="#booking">Book Now</a>
+        <div class="nav-social" aria-label="Social media">
+          <a href="#" aria-label="ABC Nails on Facebook">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-7h2.4l.4-2.8h-2.8V9.4c0-.8.2-1.4 1.4-1.4h1.5V5.5c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2H8.2V14h2.7v7h2.6z"/></svg>
+          </a>
+          <a href="#" aria-label="ABC Nails on Instagram">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 8.8A3.2 3.2 0 1 0 12 15.2 3.2 3.2 0 0 0 12 8.8zm0 5.3a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2zM16.9 7a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zM12 6.4c1.6 0 1.8 0 2.5.1.6 0 .9.1 1.1.2.3.1.5.2.7.5.3.2.4.4.5.7.1.2.2.5.2 1.1.1.7.1.9.1 2.5s0 1.8-.1 2.5c0 .6-.1.9-.2 1.1-.1.3-.2.5-.5.7-.2.3-.4.4-.7.5-.2.1-.5.2-1.1.2-.7.1-.9.1-2.5.1s-1.8 0-2.5-.1c-.6 0-.9-.1-1.1-.2a1.9 1.9 0 0 1-.7-.5 1.9 1.9 0 0 1-.5-.7c-.1-.2-.2-.5-.2-1.1-.1-.7-.1-.9-.1-2.5s0-1.8.1-2.5c0-.6.1-.9.2-1.1.1-.3.2-.5.5-.7.2-.3.4-.4.7-.5.2-.1.5-.2 1.1-.2.7-.1.9-.1 2.5-.1M12 5.3c-1.7 0-1.9 0-2.5.1-.7 0-1.1.1-1.5.3-.4.1-.8.4-1.1.7-.3.3-.6.7-.7 1.1-.2.4-.3.8-.3 1.5-.1.6-.1.8-.1 2.5s0 1.9.1 2.5c0 .7.1 1.1.3 1.5.1.4.4.8.7 1.1.3.3.7.6 1.1.7.4.2.8.3 1.5.3.6.1.8.1 2.5.1s1.9 0 2.5-.1c.7 0 1.1-.1 1.5-.3.4-.1.8-.4 1.1-.7.3-.3.6-.7.7-1.1.2-.4.3-.8.3-1.5.1-.6.1-.8.1-2.5s0-1.9-.1-2.5c0-.7-.1-1.1-.3-1.5a3 3 0 0 0-.7-1.1 3 3 0 0 0-1.1-.7c-.4-.2-.8-.3-1.5-.3-.6-.1-.8-.1-2.5-.1z"/></svg>
+          </a>
+        </div>
+      </nav>
+
+      <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============================= HERO ============================= -->
+    <section class="hero" aria-labelledby="hero-title">
+      <span class="botanical botanical--tl" aria-hidden="true"><svg viewBox="0 0 160 220" width="160" height="220"><use href="#branch"/></svg></span>
+      <span class="botanical botanical--br" aria-hidden="true"><svg viewBox="0 0 160 220" width="160" height="220"><use href="#branch"/></svg></span>
+
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow reveal" data-delay="1">Nail Bar · Hand Spa · Est. 2014</p>
+          <h1 class="hero-title reveal" id="hero-title" data-delay="2">Give Your Nails<br><span class="accent-italic">Sweet</span> Treat</h1>
+          <p class="hero-lead reveal" data-delay="3">
+            Whether you want healthy, beautifully finished nails, long-lasting
+            gel and extensions, or simply an hour to forget the day over a warm
+            hand massage — ABC&nbsp;Nails is your quiet little luxury.
+          </p>
+          <div class="hero-actions reveal" data-delay="4">
+            <a class="btn btn-ghost" href="#services">Our Services</a>
+            <a class="btn btn-primary" href="#booking">Book Now</a>
+          </div>
+          <div class="hero-trust reveal" data-delay="5">
+            <span class="stars" aria-hidden="true">★★★★★</span>
+            <span><strong>4.9</strong> / 5 — loved by 2,400+ guests</span>
+          </div>
+        </div>
+
+        <div class="hero-collage reveal" data-delay="3">
+          <figure class="collage-main img-frame">
+            <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80"
+                 alt="Manicurist carefully shaping a client's nails" width="520" height="640" loading="eager" />
+          </figure>
+          <figure class="collage-sub img-frame">
+            <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=600&q=80"
+                 alt="Relaxing hand and nail treatment at the spa" width="360" height="300" loading="eager" />
+          </figure>
+          <span class="collage-badge">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2l2.4 6.3L21 9l-5 4.3L17.5 20 12 16.4 6.5 20 8 13.3 3 9l6.6-.7z"/></svg>
+            <span>Vegan &amp;<br>cruelty-free</span>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= ABOUT ============================= -->
+    <section class="about section" id="about" aria-labelledby="about-title">
+      <span class="botanical botanical--about" aria-hidden="true"><svg viewBox="0 0 160 220" width="140" height="200"><use href="#branch"/></svg></span>
+
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow eyebrow--icon">
+            <svg class="eyebrow-spark" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 2l1.6 4.6L18 8l-4.4 1.4L12 14l-1.6-4.6L6 8l4.4-1.4z"/></svg>
+            Discover Our Story
+          </p>
+          <h2 class="section-title" id="about-title">About ABC Nails</h2>
+          <span class="about-underline" aria-hidden="true"></span>
+          <p class="section-sub">
+            What began as a two-chair studio is now a small sanctuary for hands and
+            feet. Our artists treat every set of nails like a tiny work of art —
+            unhurried, precise, and entirely yours.
+          </p>
+        </header>
+
+        <div class="about-columns">
+          <!-- Left highlights -->
+          <div class="about-col about-col--left">
+            <article class="about-feature reveal">
+              <div class="about-feature-head">
+                <span class="about-feature-icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32" width="24" height="24"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M11 27V13c0-3 2-5 5-5s5 2 5 5v14M11 27h10M13 13c0-2 1.3-3 3-3s3 1 3 3"/></svg>
+                  <span class="about-feature-spark">✦</span>
+                </span>
+                <h3>Signature Manicures</h3>
+              </div>
+              <p>Shaping, cuticle care and a flawless, long-wearing finish — closed with a warm hand massage.</p>
+            </article>
+
+            <article class="about-feature reveal">
+              <div class="about-feature-head">
+                <span class="about-feature-icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32" width="24" height="24"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M16 5l2 4 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1z"/><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M9 24c4-2 10-2 14 0"/></svg>
+                  <span class="about-feature-spark">✦</span>
+                </span>
+                <h3>Gel &amp; Builder</h3>
+              </div>
+              <p>Glass-smooth, chip-resistant colour that holds its shine for up to three weeks.</p>
+            </article>
+
+            <article class="about-feature reveal">
+              <div class="about-feature-head">
+                <span class="about-feature-icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32" width="24" height="24"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M6 24L20 10l4 4L10 28H6zM18 12l2-2 4 4-2 2"/><circle cx="24" cy="8" r="2" fill="currentColor"/></svg>
+                  <span class="about-feature-spark">✦</span>
+                </span>
+                <h3>Freehand Nail Art</h3>
+              </div>
+              <p>Hand-painted detail, chrome and ombré — sketched with you, then drawn entirely by hand.</p>
+            </article>
+          </div>
+
+          <!-- Center framed image -->
+          <div class="about-figure-wrap reveal">
+            <figure class="about-figure img-frame">
+              <img src="https://images.unsplash.com/photo-1607779097040-26e80aa78e66?auto=format&fit=crop&w=760&q=80"
+                   alt="Calm, light-filled nail salon interior" width="560" height="680" loading="lazy" />
+              <a class="about-figure-cta" href="#gallery">
+                View Our Work
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            </figure>
+            <span class="about-figure-frame" aria-hidden="true"></span>
+            <span class="about-figure-accent about-figure-accent--1" aria-hidden="true"></span>
+            <span class="about-figure-accent about-figure-accent--2" aria-hidden="true"></span>
+          </div>
+
+          <!-- Right highlights -->
+          <div class="about-col about-col--right">
+            <article class="about-feature reveal">
+              <div class="about-feature-head">
+                <span class="about-feature-icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32" width="24" height="24"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M8 22c0-5 3-9 8-9s8 4 8 9M8 22c0 2 2 3 4 3M24 22c0 2-2 3-4 3M12 25h8"/></svg>
+                  <span class="about-feature-spark">✦</span>
+                </span>
+                <h3>Spa Pedicures</h3>
+              </div>
+              <p>A warm soak, heel renewal and a soothing lower-leg massage to leave you weightless.</p>
+            </article>
+
+            <article class="about-feature reveal">
+              <div class="about-feature-head">
+                <span class="about-feature-icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32" width="24" height="24"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M16 6c3 4 6 6 6 10a6 6 0 0 1-12 0c0-4 3-6 6-10z"/></svg>
+                  <span class="about-feature-spark">✦</span>
+                </span>
+                <h3>Hand Spa Rituals</h3>
+              </div>
+              <p>Warm paraffin, a brightening mask and aromatherapy massage — pure restorative calm.</p>
+            </article>
+
+            <article class="about-feature reveal">
+              <div class="about-feature-head">
+                <span class="about-feature-icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32" width="24" height="24"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M10 26V14c0-4 2-7 6-7s6 3 6 7v12M7 26h18"/><path fill="none" stroke="currentColor" stroke-width="1.4" d="M13 14h6"/></svg>
+                  <span class="about-feature-spark">✦</span>
+                </span>
+                <h3>Sculpted Extensions</h3>
+              </div>
+              <p>Featherlight acrylic and hard-gel, shaped to the exact length and silhouette you love.</p>
+            </article>
+          </div>
+        </div>
+
+        <!-- Animated stats -->
+        <div class="about-stats" id="about-stats">
+          <div class="about-stat reveal">
+            <span class="about-stat-icon" aria-hidden="true">
+              <svg viewBox="0 0 28 28" width="24" height="24"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" d="M6 6h16a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1zM5 11h18M10 4v4M18 4v4"/></svg>
+            </span>
+            <span class="about-stat-num" data-count="12">0</span>
+            <span class="about-stat-label">Years of artistry</span>
+          </div>
+
+          <div class="about-stat reveal">
+            <span class="about-stat-icon" aria-hidden="true">
+              <svg viewBox="0 0 28 28" width="24" height="24"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" d="M14 4l2.6 6.8L24 13l-7.4 2.2L14 22l-2.6-6.8L4 13l7.4-2.2z"/></svg>
+            </span>
+            <span class="about-stat-num" data-count="50000" data-suffix="+">0</span>
+            <span class="about-stat-label">Nails perfected</span>
+          </div>
+
+          <div class="about-stat reveal">
+            <span class="about-stat-icon" aria-hidden="true">
+              <svg viewBox="0 0 28 28" width="24" height="24"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" d="M14 23s-8-4.7-8-10.4A4.6 4.6 0 0 1 14 9a4.6 4.6 0 0 1 8 3.6C22 18.3 14 23 14 23z"/></svg>
+            </span>
+            <span class="about-stat-num" data-count="2400" data-suffix="+">0</span>
+            <span class="about-stat-label">Happy guests</span>
+          </div>
+
+          <div class="about-stat reveal">
+            <span class="about-stat-icon" aria-hidden="true">
+              <svg viewBox="0 0 28 28" width="24" height="24"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" d="M14 4l2.9 6.3 6.6.7-5 4.4 1.5 6.5L14 19l-6 3.4 1.5-6.5-5-4.4 6.6-.7z"/></svg>
+            </span>
+            <span class="about-stat-num" data-count="4.9" data-decimals="1" data-suffix="★">0</span>
+            <span class="about-stat-label">Average rating</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= SERVICES ============================= -->
+    <section class="services section" id="services" aria-labelledby="services-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">What We Do</p>
+          <h2 class="section-title" id="services-title">Services made to be savoured</h2>
+          <p class="section-sub">From a quick polish change to full nail artistry — every treatment includes a warm hand massage and a cup of tea, on us.</p>
+        </header>
+
+        <div class="service-grid">
+          <article class="service-card reveal">
+            <span class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" width="26" height="26"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M11 27V13c0-3 2-5 5-5s5 2 5 5v14M11 27h10M13 13c0-2 1.3-3 3-3s3 1 3 3"/></svg>
+            </span>
+            <h3>Signature Manicure</h3>
+            <p>Shaping, cuticle care, buff and a flawless polish, finished with a pressure-point hand massage.</p>
+            <span class="service-price">from $32</span>
+          </article>
+
+          <article class="service-card reveal">
+            <span class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" width="26" height="26"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M8 22c0-5 3-9 8-9s8 4 8 9M8 22c0 2 2 3 4 3M24 22c0 2-2 3-4 3M12 25h8"/></svg>
+            </span>
+            <h3>Spa Pedicure</h3>
+            <p>A warm soak, exfoliation and heel renewal, followed by a relaxing lower-leg massage.</p>
+            <span class="service-price">from $45</span>
+          </article>
+
+          <article class="service-card reveal">
+            <span class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" width="26" height="26"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M16 5l2 4 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1z"/><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M9 24c4-2 10-2 14 0"/></svg>
+            </span>
+            <h3>Gel &amp; Builder</h3>
+            <p>Glass-smooth, chip-resistant colour that lasts up to three weeks without a single nick.</p>
+            <span class="service-price">from $48</span>
+          </article>
+
+          <article class="service-card reveal">
+            <span class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" width="26" height="26"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M6 24L20 10l4 4L10 28H6zM18 12l2-2 4 4-2 2"/><circle cx="24" cy="8" r="2" fill="currentColor"/></svg>
+            </span>
+            <h3>Bespoke Nail Art</h3>
+            <p>Hand-painted detail, chrome, ombré or jewels — designed with you, drawn freehand by our artists.</p>
+            <span class="service-price">from $20</span>
+          </article>
+
+          <article class="service-card reveal">
+            <span class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" width="26" height="26"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M10 26V14c0-4 2-7 6-7s6 3 6 7v12M7 26h18"/><path fill="none" stroke="currentColor" stroke-width="1.4" d="M13 14h6"/></svg>
+            </span>
+            <h3>Extensions</h3>
+            <p>Featherlight acrylic and hard-gel extensions sculpted to the exact length and shape you love.</p>
+            <span class="service-price">from $60</span>
+          </article>
+
+          <article class="service-card reveal">
+            <span class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" width="26" height="26"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M16 6c3 4 6 6 6 10a6 6 0 0 1-12 0c0-4 3-6 6-10z"/></svg>
+            </span>
+            <h3>Hand Spa Ritual</h3>
+            <p>Warm paraffin, a brightening mask and aromatherapy massage — pure restorative indulgence.</p>
+            <span class="service-price">from $38</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= GALLERY ============================= -->
+    <section class="gallery section" id="gallery" aria-labelledby="gallery-title">
+      <span class="botanical botanical--gallery" aria-hidden="true"><svg viewBox="0 0 160 220" width="140" height="200"><use href="#branch"/></svg></span>
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">The Lookbook</p>
+          <h2 class="section-title" id="gallery-title">A little inspiration</h2>
+          <p class="section-sub">Real sets created in our studio. Save a favourite and bring it to your appointment.</p>
+        </header>
+
+        <div class="gallery-filters reveal" role="tablist" aria-label="Filter gallery">
+          <button class="chip is-active" data-filter="all" role="tab" aria-selected="true">All</button>
+          <button class="chip" data-filter="minimal" role="tab" aria-selected="false">Minimal</button>
+          <button class="chip" data-filter="art" role="tab" aria-selected="false">Nail Art</button>
+          <button class="chip" data-filter="seasonal" role="tab" aria-selected="false">Seasonal</button>
+        </div>
+
+        <div class="gallery-grid">
+          <figure class="gallery-item img-frame reveal" data-cat="minimal">
+            <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=520&q=80" alt="Soft nude minimal manicure" width="420" height="520" loading="lazy" />
+          </figure>
+          <figure class="gallery-item img-frame reveal" data-cat="art">
+            <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=520&q=80" alt="Detailed hand-painted nail art" width="420" height="360" loading="lazy" />
+          </figure>
+          <figure class="gallery-item img-frame reveal" data-cat="seasonal">
+            <img src="https://images.unsplash.com/photo-1601612628452-9e99ced43524?auto=format&fit=crop&w=520&q=80" alt="Warm seasonal nail colour" width="420" height="420" loading="lazy" />
+          </figure>
+          <figure class="gallery-item img-frame reveal" data-cat="minimal">
+            <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=520&q=80" alt="Glossy neutral polish" width="420" height="420" loading="lazy" />
+          </figure>
+          <figure class="gallery-item img-frame reveal" data-cat="art">
+            <img src="https://images.unsplash.com/photo-1571290274554-6a2eaa771e5f?auto=format&fit=crop&w=520&q=80" alt="Creative coloured nail design" width="420" height="520" loading="lazy" />
+          </figure>
+          <figure class="gallery-item img-frame reveal" data-cat="seasonal">
+            <img src="https://images.unsplash.com/photo-1599948128020-9a44505b0d1b?auto=format&fit=crop&w=520&q=80" alt="Festive sparkle manicure" width="420" height="360" loading="lazy" />
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= PRICING ============================= -->
+    <section class="pricing section" id="pricing" aria-labelledby="pricing-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">The Menu</p>
+          <h2 class="section-title" id="pricing-title">Treatments &amp; pricing</h2>
+          <p class="section-sub">Transparent pricing, no surprises. Add-ons available at every chair.</p>
+        </header>
+
+        <div class="pricing-grid">
+          <div class="price-col reveal">
+            <h3 class="price-col-title">Hands</h3>
+            <ul class="price-list">
+              <li><span class="pl-name">Express Polish Change</span><span class="pl-dot" aria-hidden="true"></span><span class="pl-price">$18</span></li>
+              <li><span class="pl-name">Signature Manicure</span><span class="pl-dot" aria-hidden="true"></span><span class="pl-price">$32</span></li>
+              <li><span class="pl-name">Gel Manicure</span><span class="pl-dot" aria-hidden="true"></span><span class="pl-price">$48</span></li>
+              <li><span class="pl-name">Builder Gel Overlay</span><span class="pl-dot" aria-hidden="true"></span><span class="pl-price">$55</span></li>
+              <li><span class="pl-name">Acrylic Extensions</span><span class="pl-dot" aria-hidden="true"></span><span class="pl-price">$60</span></li>
+            </ul>
+          </div>
+
+          <div class="price-col price-col--feature reveal">
+            <span class="price-tag">Most loved</span>
+            <h3 class="price-col-title">The ABC Ritual</h3>
+            <p class="price-feature-desc">Our full pampering hour: spa manicure, gel colour, paraffin treatment and a signature hand massage.</p>
+            <div class="price-feature-amount"><span>$</span>89<small>/ 60 min</small></div>
+            <a class="btn btn-primary btn-block" href="#booking">Book the Ritual</a>
+          </div>
+
+          <div class="price-col reveal">
+            <h3 class="price-col-title">Feet</h3>
+            <ul class="price-list">
+              <li><span class="pl-name">Express Pedicure</span><span class="pl-dot" aria-hidden="true"></span><span class="pl-price">$30</span></li>
+              <li><span class="pl-name">Spa Pedicure</span><span class="pl-dot" aria-hidden="true"></span><span class="pl-price">$45</span></li>
+              <li><span class="pl-name">Gel Pedicure</span><span class="pl-dot" aria-hidden="true"></span><span class="pl-price">$58</span></li>
+              <li><span class="pl-name">Heel Renewal Add-on</span><span class="pl-dot" aria-hidden="true"></span><span class="pl-price">$15</span></li>
+              <li><span class="pl-name">Nail Art (per nail)</span><span class="pl-dot" aria-hidden="true"></span><span class="pl-price">$5</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= WHY ABC NAILS ============================= -->
+    <section class="why section" aria-labelledby="why-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">Why ABC Nails</p>
+          <h2 class="section-title" id="why-title">The little things, done well</h2>
+        </header>
+
+        <div class="why-grid">
+          <article class="why-item reveal">
+            <span class="why-num">01</span>
+            <h3>Considered products</h3>
+            <p>Vegan, 16-free, low-odour polishes and gels that are kinder to your nails and the room.</p>
+          </article>
+          <article class="why-item reveal">
+            <span class="why-num">02</span>
+            <h3>Spotless &amp; safe</h3>
+            <p>Autoclave sterilisation and single-use files for every guest, every single time.</p>
+          </article>
+          <article class="why-item reveal">
+            <span class="why-num">03</span>
+            <h3>True artists</h3>
+            <p>Licensed technicians who train continuously — freehand art is their love language.</p>
+          </article>
+          <article class="why-item reveal">
+            <span class="why-num">04</span>
+            <h3>A real pause</h3>
+            <p>Soft music, warm tea and zero rush. You leave calmer than you arrived.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= TESTIMONIALS ============================= -->
+    <section class="testimonials section" aria-labelledby="tst-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">Kind Words</p>
+          <h2 class="section-title" id="tst-title">Guests on ABC Nails</h2>
+        </header>
+
+        <div class="tst-stage reveal">
+          <button class="tst-arrow tst-prev" aria-label="Previous testimonial">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" d="M15 5l-7 7 7 7"/></svg>
+          </button>
+
+          <div class="tst-track" id="tst-track">
+            <figure class="tst-card is-active">
+              <span class="tst-quote" aria-hidden="true">“</span>
+              <span class="stars" aria-hidden="true">★★★★★</span>
+              <blockquote>The most precise gel set I've ever had — three weeks later and not a single chip. The hand massage alone is worth the visit.</blockquote>
+              <figcaption>
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="" width="48" height="48" loading="lazy" />
+                <span><strong>Amara Okafor</strong><small>Gel manicure regular</small></span>
+              </figcaption>
+            </figure>
+
+            <figure class="tst-card">
+              <span class="tst-quote" aria-hidden="true">“</span>
+              <span class="stars" aria-hidden="true">★★★★★</span>
+              <blockquote>I came in stressed and left floating. They remembered my name, my favourite colour, even my tea. That's rare these days.</blockquote>
+              <figcaption>
+                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=120&q=80" alt="" width="48" height="48" loading="lazy" />
+                <span><strong>Priya Sharma</strong><small>Spa pedicure</small></span>
+              </figcaption>
+            </figure>
+
+            <figure class="tst-card">
+              <span class="tst-quote" aria-hidden="true">“</span>
+              <span class="stars" aria-hidden="true">★★★★★</span>
+              <blockquote>My wedding nails were beyond anything I'd pictured. They sketched three options and hand-painted the final set freehand. Flawless.</blockquote>
+              <figcaption>
+                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80" alt="" width="48" height="48" loading="lazy" />
+                <span><strong>Lena Ruiz</strong><small>Bridal nail art</small></span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <button class="tst-arrow tst-next" aria-label="Next testimonial">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <div class="tst-dots" id="tst-dots" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- ============================= BOOKING CTA ============================= -->
+    <section class="booking section" id="booking" aria-labelledby="booking-title">
+      <div class="container booking-grid">
+        <div class="booking-copy reveal">
+          <p class="eyebrow eyebrow--light">Reserve Your Seat</p>
+          <h2 class="section-title section-title--light" id="booking-title">Ready to treat<br>yourself?</h2>
+          <p class="booking-lead">Tell us when suits you and we'll confirm within the hour. Walk-ins are welcome too — but a little notice means your favourite artist is waiting.</p>
+          <ul class="booking-info">
+            <li><span aria-hidden="true">📍</span> 14 Rosewood Lane, Downtown</li>
+            <li><span aria-hidden="true">🕘</span> Mon–Sat · 9am – 8pm · Sun 10am – 5pm</li>
+            <li><span aria-hidden="true">✆</span> (555) 018-2240</li>
+          </ul>
+        </div>
+
+        <form class="booking-form reveal" id="booking-form" novalidate>
+          <div class="field">
+            <label for="bf-name">Name</label>
+            <input id="bf-name" name="name" type="text" placeholder="Your name" required />
+          </div>
+          <div class="field">
+            <label for="bf-service">Service</label>
+            <select id="bf-service" name="service" required>
+              <option value="" disabled selected>Choose a treatment</option>
+              <option>Signature Manicure</option>
+              <option>Spa Pedicure</option>
+              <option>Gel &amp; Builder</option>
+              <option>Bespoke Nail Art</option>
+              <option>The ABC Ritual</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="bf-date">Preferred date</label>
+            <input id="bf-date" name="date" type="date" required />
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Request Appointment</button>
+          <p class="form-note" id="form-note" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================= FOOTER ============================= -->
+  <footer class="site-footer" id="contact">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="brand brand--footer" href="#top" aria-label="ABC Nails home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="40" height="40">
+              <circle cx="24" cy="24" r="22.5" fill="none" stroke="currentColor" stroke-width="1"/>
+              <text x="24" y="29" text-anchor="middle" class="brand-mark-letter">A</text>
+            </svg>
+          </span>
+          <span class="brand-word">ABC <em>Nails</em></span>
+        </a>
+        <p>A quiet little luxury for your hands and feet, in the heart of downtown since 2014.</p>
+        <div class="footer-social" aria-label="Social media">
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-7h2.4l.4-2.8h-2.8V9.4c0-.8.2-1.4 1.4-1.4h1.5V5.5c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2H8.2V14h2.7v7h2.6z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 8.8A3.2 3.2 0 1 0 12 15.2 3.2 3.2 0 0 0 12 8.8zm0 5.3a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2zM16.9 7a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zM12 6.4c1.6 0 1.8 0 2.5.1.6 0 .9.1 1.1.2.3.1.5.2.7.5.3.2.4.4.5.7.1.2.2.5.2 1.1.1.7.1.9.1 2.5s0 1.8-.1 2.5c0 .6-.1.9-.2 1.1-.1.3-.2.5-.5.7-.2.3-.4.4-.7.5-.2.1-.5.2-1.1.2-.7.1-.9.1-2.5.1s-1.8 0-2.5-.1c-.6 0-.9-.1-1.1-.2a1.9 1.9 0 0 1-.7-.5 1.9 1.9 0 0 1-.5-.7c-.1-.2-.2-.5-.2-1.1-.1-.7-.1-.9-.1-2.5s0-1.8.1-2.5c0-.6.1-.9.2-1.1.1-.3.2-.5.5-.7.2-.3.4-.4.7-.5.2-.1.5-.2 1.1-.2.7-.1.9-.1 2.5-.1M12 5.3c-1.7 0-1.9 0-2.5.1-.7 0-1.1.1-1.5.3-.4.1-.8.4-1.1.7-.3.3-.6.7-.7 1.1-.2.4-.3.8-.3 1.5-.1.6-.1.8-.1 2.5s0 1.9.1 2.5c0 .7.1 1.1.3 1.5.1.4.4.8.7 1.1.3.3.7.6 1.1.7.4.2.8.3 1.5.3.6.1.8.1 2.5.1s1.9 0 2.5-.1c.7 0 1.1-.1 1.5-.3.4-.1.8-.4 1.1-.7.3-.3.6-.7.7-1.1.2-.4.3-.8.3-1.5.1-.6.1-.8.1-2.5s0-1.9-.1-2.5c0-.7-.1-1.1-.3-1.5a3 3 0 0 0-.7-1.1 3 3 0 0 0-1.1-.7c-.4-.2-.8-.3-1.5-.3-.6-.1-.8-.1-2.5-.1z"/></svg></a>
+        </div>
+      </div>
+
+      <nav class="footer-col" aria-label="Explore">
+        <h4>Explore</h4>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#booking">Book Now</a>
+      </nav>
+
+      <nav class="footer-col" aria-label="Treatments">
+        <h4>Treatments</h4>
+        <a href="#services">Manicures</a>
+        <a href="#services">Pedicures</a>
+        <a href="#services">Gel &amp; Builder</a>
+        <a href="#services">Nail Art</a>
+        <a href="#services">Extensions</a>
+      </nav>
+
+      <div class="footer-col footer-news">
+        <h4>Stay in touch</h4>
+        <p>Seasonal looks &amp; the odd treat, never spam.</p>
+        <form class="news-form" id="news-form" novalidate>
+          <input type="email" name="email" placeholder="you@email.com" aria-label="Email address" required />
+          <button type="submit" aria-label="Subscribe">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+        <p class="news-note" id="news-note" role="status" aria-live="polite"></p>
+        <p class="footer-contact">14 Rosewood Lane · (555) 018-2240</p>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© <span id="year"></span> ABC Nails. Demo website — all imagery for illustration only.</p>
+      <p>Crafted with care.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

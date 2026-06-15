@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GetFit Fitness — Coached strength &amp; conditioning</title>
+  <meta name="description" content="GetFit Fitness is a coached strength and conditioning gym. Start your free week — strength, HIIT, mobility, boxing and spin, programmed by real coaches." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Archivo+Expanded:wght@800;900&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#programs">Skip to content</a>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#top" class="brand" aria-label="GetFit Fitness home">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6.5 6.5 L17.5 17.5 M17.5 6.5 L6.5 17.5" opacity="0"/>
+            <path d="M4 9v6 M7 6v12 M17 6v12 M20 9v6 M7 12h10"/>
+          </svg>
+        </span>
+        <span class="brand__name">GetFit<span class="brand__dot">.</span></span>
+      </a>
+
+      <nav class="nav__links" aria-label="Primary">
+        <a href="#programs">Programs</a>
+        <a href="#why">Why us</a>
+        <a href="#trainers">Coaches</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#schedule">Schedule</a>
+      </nav>
+
+      <div class="nav__actions">
+        <a href="#pricing" class="btn btn--ghost nav__signin">Member login</a>
+        <a href="#cta" class="btn btn--solid">Start free week</a>
+        <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu" hidden>
+      <a href="#programs">Programs</a>
+      <a href="#why">Why us</a>
+      <a href="#trainers">Coaches</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#cta" class="btn btn--solid">Start free week</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ============ HERO: KINETIC TYPE WALL ============ -->
+    <section class="hero" id="hero" aria-label="GetFit Fitness">
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="hero__noise" aria-hidden="true"></div>
+
+      <div class="hero__inner">
+        <p class="hero__eyebrow" data-anim="fade">
+          <span class="dot" aria-hidden="true"></span>
+          Coached strength &amp; conditioning · Est. 2014
+        </p>
+
+        <h1 class="hero__wall" aria-label="Get fit.">
+          <span class="hero__line" aria-hidden="true">
+            <span class="hero__word" data-word>
+              <span class="ltr">G</span><span class="ltr">E</span><span class="ltr">T</span>
+            </span>
+          </span>
+          <span class="hero__line hero__line--two" aria-hidden="true">
+            <span class="hero__word" data-word>
+              <span class="ltr">F</span><span class="ltr">I</span><span class="ltr">T</span><span class="ltr ltr--dot">.</span>
+            </span>
+          </span>
+        </h1>
+
+        <!-- animated pulse / EKG line -->
+        <svg class="hero__pulse" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,40 L380,40 L405,40 L420,12 L445,68 L470,22 L495,40 L1200,40"
+                fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        <div class="hero__base">
+          <p class="hero__sub" data-anim="fade">
+            No judgment, no guesswork. Real coaches program every session so you walk in
+            knowing exactly what moves you forward.
+          </p>
+          <div class="hero__cta" data-anim="fade">
+            <a href="#cta" class="btn btn--solid btn--lg">Start your free week</a>
+            <a href="#why" class="btn btn--text">
+              <span class="play" aria-hidden="true">▶</span> Watch a class
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- discipline marquee -->
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track" id="marqueeTrack">
+          <span>Strength</span><span class="sep">✦</span>
+          <span>HIIT</span><span class="sep">✦</span>
+          <span>Mobility</span><span class="sep">✦</span>
+          <span>Boxing</span><span class="sep">✦</span>
+          <span>Spin</span><span class="sep">✦</span>
+          <span>Olympic Lifting</span><span class="sep">✦</span>
+          <span>Recovery</span><span class="sep">✦</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STATS STRIP ============ -->
+    <section class="stats" aria-label="By the numbers">
+      <ul class="stats__row">
+        <li class="stat"><span class="stat__num" data-count="2400" data-suffix="+">0</span><span class="stat__label">Members coached</span></li>
+        <li class="stat"><span class="stat__num" data-count="60" data-suffix="/wk">0</span><span class="stat__label">Classes a week</span></li>
+        <li class="stat"><span class="stat__num" data-count="18">0</span><span class="stat__label">Certified coaches</span></li>
+        <li class="stat"><span class="stat__num" data-count="92" data-suffix="%">0</span><span class="stat__label">Still training after 6 months</span></li>
+      </ul>
+    </section>
+
+    <!-- ============ PROGRAMS (BENTO) ============ -->
+    <section class="section programs" id="programs">
+      <div class="section__head">
+        <p class="kicker">Train your way</p>
+        <h2 class="section__title">Programs built around <em>your</em> goal, not ours.</h2>
+        <p class="section__lead">Six disciplines, one membership. Mix and match, or let a coach build your week.</p>
+      </div>
+
+      <div class="bento">
+        <article class="tile tile--feature" data-reveal style="--img:url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1400&q=80')">
+          <div class="tile__body">
+            <span class="tile__tag">Most popular</span>
+            <h3>Strength</h3>
+            <p>Progressive barbell and dumbbell programming. Build real, measurable mass and power with technique-first coaching.</p>
+            <a href="#cta" class="tile__link">Try a session →</a>
+          </div>
+        </article>
+
+        <article class="tile tile--tall" data-reveal style="--img:url('https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=900&q=80')">
+          <div class="tile__body">
+            <h3>HIIT</h3>
+            <p>45 minutes, max effort, fully scaled to you. Conditioning that torches calories without the burnout.</p>
+          </div>
+        </article>
+
+        <article class="tile" data-reveal style="--img:url('https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=900&q=80')">
+          <div class="tile__body">
+            <h3>Mobility &amp; Yoga</h3>
+            <p>Move better, hurt less. Flow and restore between hard sessions.</p>
+          </div>
+        </article>
+
+        <article class="tile" data-reveal style="--img:url('https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=900&q=80')">
+          <div class="tile__body">
+            <h3>Boxing</h3>
+            <p>Footwork, combos and cardio that hits different. Gloves on, stress off.</p>
+          </div>
+        </article>
+
+        <article class="tile tile--wide" data-reveal style="--img:url('https://images.unsplash.com/photo-1534258936925-c58bed479fcb?auto=format&fit=crop&w=1400&q=80')">
+          <div class="tile__body">
+            <h3>Spin &amp; Recovery</h3>
+            <p>Rhythm rides that fly by, plus sauna and guided recovery so your body keeps up with your ambition.</p>
+            <a href="#cta" class="tile__link">See the schedule →</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ WHY GETFIT ============ -->
+    <section class="section why" id="why">
+      <div class="why__grid">
+        <div class="why__copy" data-reveal>
+          <p class="kicker">Why GetFit</p>
+          <h2 class="section__title">A gym that coaches, <br />not just one with weights.</h2>
+          <p class="section__lead">Anyone can rent you a treadmill. We program your training, watch your form, and keep you accountable, so progress is a plan, not an accident.</p>
+
+          <ul class="why__list">
+            <li data-reveal>
+              <span class="why__n">01</span>
+              <div><h4>Coaches on the floor, always</h4><p>Every class is led and corrected in real time. You never train guessing.</p></div>
+            </li>
+            <li data-reveal>
+              <span class="why__n">02</span>
+              <div><h4>Programmed progression</h4><p>Sessions build week to week toward a goal you actually set.</p></div>
+            </li>
+            <li data-reveal>
+              <span class="why__n">03</span>
+              <div><h4>Scaled for every body</h4><p>Day one or year ten, every movement has your version of it.</p></div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="why__media" data-reveal>
+          <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1100&q=80"
+               alt="A coach spotting a member through battle-rope intervals on the gym floor" loading="lazy" />
+          <div class="why__badge">
+            <strong>Free week</strong>
+            <span>Every class included. No card required.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TRAINERS ============ -->
+    <section class="section trainers" id="trainers">
+      <div class="section__head section__head--row">
+        <div>
+          <p class="kicker">Your corner</p>
+          <h2 class="section__title">Coaches who remember your name.</h2>
+        </div>
+        <p class="section__lead">A team of certified strength, conditioning and mobility specialists, here for your first rep and your hundredth.</p>
+      </div>
+
+      <div class="coaches">
+        <article class="coach" data-reveal>
+          <div class="coach__photo">
+            <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?auto=format&fit=crop&w=800&q=80" alt="Coach Maya Okafor, head of strength, mid-set on the platform" loading="lazy" />
+          </div>
+          <div class="coach__meta">
+            <h3>Maya Okafor</h3>
+            <p class="coach__role">Head of Strength</p>
+            <p class="coach__bio">Powerlifting national. Turns nervous beginners into people who deadlift their bodyweight, and grin about it.</p>
+          </div>
+        </article>
+
+        <article class="coach" data-reveal>
+          <div class="coach__photo">
+            <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80" alt="Coach Theo Bright, conditioning lead, resetting kettlebells between rounds" loading="lazy" />
+          </div>
+          <div class="coach__meta">
+            <h3>Theo Bright</h3>
+            <p class="coach__role">Conditioning Lead</p>
+            <p class="coach__bio">Ex-track sprinter. Makes the hardest 45 minutes of your week somehow fly by.</p>
+          </div>
+        </article>
+
+        <article class="coach" data-reveal>
+          <div class="coach__photo">
+            <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=800&q=80" alt="Coach Priya Anand, mobility specialist, guiding a deep stretch" loading="lazy" />
+          </div>
+          <div class="coach__meta">
+            <h3>Priya Anand</h3>
+            <p class="coach__role">Mobility &amp; Recovery</p>
+            <p class="coach__bio">Physio background. The reason members in their 50s still squat pain-free.</p>
+          </div>
+        </article>
+
+        <article class="coach" data-reveal>
+          <div class="coach__photo">
+            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=80" alt="Coach Dani Cruz, boxing coach, holding pads on the gym floor" loading="lazy" />
+          </div>
+          <div class="coach__meta">
+            <h3>Dani Cruz</h3>
+            <p class="coach__role">Boxing &amp; HIIT</p>
+            <p class="coach__bio">Amateur boxer turned coach. Equal parts technical and contagious energy.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ PRICING ============ -->
+    <section class="section pricing" id="pricing">
+      <div class="section__head">
+        <p class="kicker">Membership</p>
+        <h2 class="section__title">Simple plans. No lock-in tricks.</h2>
+        <p class="section__lead">Every plan starts with a free week. Cancel anytime, no contracts hiding in the fine print.</p>
+      </div>
+
+      <div class="plans">
+        <article class="plan" data-reveal>
+          <h3 class="plan__name">Day Pass</h3>
+          <p class="plan__price"><span class="amt">$22</span><span class="per">/ visit</span></p>
+          <p class="plan__note">Drop in whenever the mood strikes.</p>
+          <ul class="plan__feats">
+            <li>Any single class</li>
+            <li>Full equipment access</li>
+            <li>Locker &amp; towel</li>
+          </ul>
+          <a href="#cta" class="btn btn--outline btn--block">Get a day pass</a>
+        </article>
+
+        <article class="plan plan--featured" data-reveal>
+          <span class="plan__flag">Most popular</span>
+          <h3 class="plan__name">Unlimited</h3>
+          <p class="plan__price"><span class="amt">$89</span><span class="per">/ month</span></p>
+          <p class="plan__note">All classes, all disciplines, all you.</p>
+          <ul class="plan__feats">
+            <li>Unlimited classes</li>
+            <li>Open-gym access 24/7</li>
+            <li>Quarterly progress check-in</li>
+            <li>Sauna &amp; recovery zone</li>
+          </ul>
+          <a href="#cta" class="btn btn--solid btn--block">Start free week</a>
+        </article>
+
+        <article class="plan" data-reveal>
+          <h3 class="plan__name">Performance</h3>
+          <p class="plan__price"><span class="amt">$149</span><span class="per">/ month</span></p>
+          <p class="plan__note">Coaching that's actually personal.</p>
+          <ul class="plan__feats">
+            <li>Everything in Unlimited</li>
+            <li>2 private coaching sessions / mo</li>
+            <li>Custom training plan</li>
+            <li>Nutrition guidance</li>
+          </ul>
+          <a href="#cta" class="btn btn--outline btn--block">Go Performance</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ SCHEDULE ============ -->
+    <section class="section schedule" id="schedule">
+      <div class="section__head">
+        <p class="kicker">This week</p>
+        <h2 class="section__title">Find your slot.</h2>
+        <p class="section__lead">Classes from 6am to 8pm. Tap a day to see what's on.</p>
+      </div>
+
+      <div class="sched">
+        <div class="sched__tabs" role="tablist" aria-label="Day of week">
+          <button class="sched__tab is-active" role="tab" aria-selected="true" data-day="Mon">Mon</button>
+          <button class="sched__tab" role="tab" aria-selected="false" data-day="Tue">Tue</button>
+          <button class="sched__tab" role="tab" aria-selected="false" data-day="Wed">Wed</button>
+          <button class="sched__tab" role="tab" aria-selected="false" data-day="Thu">Thu</button>
+          <button class="sched__tab" role="tab" aria-selected="false" data-day="Fri">Fri</button>
+          <button class="sched__tab" role="tab" aria-selected="false" data-day="Sat">Sat</button>
+          <button class="sched__tab" role="tab" aria-selected="false" data-day="Sun">Sun</button>
+        </div>
+        <div class="sched__list" id="schedList" role="tabpanel" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- ============ TESTIMONIALS ============ -->
+    <section class="section quotes" aria-label="What members say">
+      <div class="section__head">
+        <p class="kicker">Real members</p>
+        <h2 class="section__title">Progress people can feel.</h2>
+      </div>
+      <div class="quotes__grid">
+        <figure class="quote quote--big" data-reveal>
+          <blockquote>"I joined terrified of the squat rack. Eight months later it's my favorite part of the week. The coaches make the difference."</blockquote>
+          <figcaption><span class="quote__name">Renee T.</span><span class="quote__since">Member since 2023</span></figcaption>
+        </figure>
+        <figure class="quote" data-reveal>
+          <blockquote>"First gym that actually had a plan for me. I show up and the thinking is done."</blockquote>
+          <figcaption><span class="quote__name">Marcus L.</span></figcaption>
+        </figure>
+        <figure class="quote" data-reveal>
+          <blockquote>"Down 30lbs, but honestly I stay for the people. It doesn't feel like a chore."</blockquote>
+          <figcaption><span class="quote__name">Aisha K.</span></figcaption>
+        </figure>
+        <figure class="quote" data-reveal>
+          <blockquote>"At 54 I'm stronger than I was at 30. Priya's mobility work gave me my mornings back."</blockquote>
+          <figcaption><span class="quote__name">Gordon P.</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ GALLERY ============ -->
+    <section class="gallery" aria-label="Inside GetFit">
+      <figure class="gallery__item" data-parallax="0.12"><img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&w=900&q=80" alt="Racks of dumbbells along the open gym floor" loading="lazy" /></figure>
+      <figure class="gallery__item" data-parallax="-0.08"><img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=900&q=80" alt="A member setting up under a loaded barbell" loading="lazy" /></figure>
+      <figure class="gallery__item" data-parallax="0.16"><img src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?auto=format&fit=crop&w=900&q=80" alt="Early-morning conditioning class in full motion" loading="lazy" /></figure>
+      <figure class="gallery__item" data-parallax="-0.1"><img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=80" alt="A member catching their breath, mid-session grin" loading="lazy" /></figure>
+    </section>
+
+    <!-- ============ FINAL CTA ============ -->
+    <section class="cta" id="cta">
+      <div class="cta__inner">
+        <p class="kicker kicker--dark">Your free week starts now</p>
+        <h2 class="cta__title">Come train with us.<br />The first week's on the house.</h2>
+        <p class="cta__sub">Pick a class, show up, see how it feels. No card, no contract, no pressure.</p>
+        <form class="cta__form" id="ctaForm" novalidate>
+          <label class="sr-only" for="email">Email address</label>
+          <input type="email" id="email" name="email" placeholder="you@email.com" required />
+          <button type="submit" class="btn btn--ink btn--lg">Claim free week</button>
+        </form>
+        <p class="cta__msg" id="ctaMsg" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a href="#top" class="brand brand--light">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6 M7 6v12 M17 6v12 M20 9v6 M7 12h10"/></svg>
+          </span>
+          <span class="brand__name">GetFit<span class="brand__dot">.</span></span>
+        </a>
+        <p>Coached strength &amp; conditioning. Show up, we'll handle the plan.</p>
+      </div>
+
+      <nav class="footer__col" aria-label="Explore">
+        <h4>Explore</h4>
+        <a href="#programs">Programs</a>
+        <a href="#trainers">Coaches</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#schedule">Schedule</a>
+      </nav>
+
+      <div class="footer__col">
+        <h4>Visit</h4>
+        <p>184 Marrow Street<br />Eastside, Portland</p>
+        <p>Mon–Fri 5a–10p<br />Sat–Sun 7a–6p</p>
+      </div>
+
+      <div class="footer__col">
+        <h4>Stay in touch</h4>
+        <p>(503) 555-0148<br />hello@getfit.fit</p>
+        <div class="footer__social">
+          <a href="#" aria-label="Instagram">IG</a>
+          <a href="#" aria-label="TikTok">TT</a>
+          <a href="#" aria-label="YouTube">YT</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© 2026 GetFit Fitness. All rights reserved.</p>
+      <p class="footer__fine">A demo site. Not a real gym, but it could be.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

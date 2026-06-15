@@ -80,18 +80,26 @@ if (heroEl && heroVideo) {
     let progress   = 0;
     let rafId      = null;
     let moved      = false;
+    let dirty      = true;   // a scroll/resize happened; recompute layout next frame
+
+    // Cache each step's threshold and last shown/hidden state so reveal() only
+    // writes to the DOM when a step actually crosses its threshold — no class
+    // churn (and no style recalc) on every frame of a long scroll.
+    const stepFrom = heroSteps.map(s => parseFloat(s.dataset.from) || 0);
+    const stepIn   = heroSteps.map(() => false);
 
     function reveal() {
-      heroSteps.forEach(step => {
-        const from = parseFloat(step.dataset.from) || 0;
-        step.classList.toggle('is-in', progress >= from);
-      });
-      if (progress > 0.02 && !moved) {
-        moved = true;
-        heroEl.classList.add('hero--moved');
-      } else if (progress <= 0.02 && moved) {
-        moved = false;
-        heroEl.classList.remove('hero--moved');
+      for (let i = 0; i < heroSteps.length; i++) {
+        const shouldShow = progress >= stepFrom[i];
+        if (shouldShow !== stepIn[i]) {
+          stepIn[i] = shouldShow;
+          heroSteps[i].classList.toggle('is-in', shouldShow);
+        }
+      }
+      const wantMoved = progress > 0.02;
+      if (wantMoved !== moved) {
+        moved = wantMoved;
+        heroEl.classList.toggle('hero--moved', wantMoved);
       }
     }
 
@@ -120,12 +128,23 @@ if (heroEl && heroVideo) {
     let   lastSeek  = -1;    // last currentTime we actually issued
 
     function loop(now) {
+      // Read layout at most once per painted frame instead of once per scroll
+      // event — a fling fires scroll dozens of times between paints and each
+      // getBoundingClientRect() forces a reflow; we only ever need the latest.
+      if (dirty) {
+        dirty      = false;
+        progress   = getProgress();
+        targetTime = progress * endTime();
+        reveal();
+      }
+
       const dt = lastT ? Math.min(now - lastT, 50) : 16.7;   // cap after idle gaps
       lastT = now;
 
       const ease = 1 - Math.exp(-dt / SMOOTH_MS);
       shownTime += (targetTime - shownTime) * ease;
-      if (Math.abs(targetTime - shownTime) < 0.004) shownTime = targetTime;
+      const settled = Math.abs(targetTime - shownTime) < 0.004;
+      if (settled) shownTime = targetTime;
 
       if (duration && !heroVideo.seeking) {
         const t = clamp(shownTime, 0, endTime());
@@ -133,20 +152,25 @@ if (heroEl && heroVideo) {
           try { heroVideo.currentTime = t; lastSeek = t; } catch (e) {}
         }
       }
-      rafId = Math.abs(targetTime - shownTime) > 0.004 ? requestAnimationFrame(loop) : null;
+      // Idle the loop once the frame has settled and there's nothing new to read;
+      // a fresh scroll re-arms it via schedule().
+      rafId = (settled && !dirty) ? null : requestAnimationFrame(loop);
+    }
+
+    function schedule() {
+      if (rafId === null) { lastT = 0; rafId = requestAnimationFrame(loop); }
     }
 
     function onScroll() {
-      progress   = getProgress();
-      targetTime = progress * endTime();
-      reveal();
-      if (rafId === null) { lastT = 0; rafId = requestAnimationFrame(loop); }
+      dirty = true;
+      schedule();
     }
 
     function start() {
       duration = heroVideo.duration || 0;
       try { heroVideo.currentTime = 0; } catch (e) {}   // paint the first frame
-      onScroll();
+      dirty = true;
+      schedule();
     }
     if (heroVideo.readyState >= 1) start();
     else heroVideo.addEventListener('loadedmetadata', start, { once: true });
@@ -163,10 +187,31 @@ const galleryStage   = document.getElementById('gallery-stage');
 const portfolioModal = document.getElementById('portfolio-modal');
 
 if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined') {
-  const TRADE_LABELS = {
-    hvac: 'HVAC', plumbing: 'Plumbing', landscaping: 'Landscaping',
-    roofing: 'Roofing', other: 'Other',
+  const CATEGORY_LABELS = {
+    hvac: 'HVAC', plumbing: 'Plumbing', roofing: 'Roofing',
+    restaurant: 'Restaurant', dining: 'Fine Dining', beauty: 'Nail Salon',
+    services: 'Dry Cleaning', wellness: 'Massage & Spa', fitness: 'Fitness',
   };
+
+  // Simple monoline glyphs (24×24, stroke = currentColor) — one per category.
+  const SVG = (paths) =>
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" ` +
+    `stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+  const ICONS = {
+    hvac:       SVG('<path d="M3 8h11a3 3 0 1 0-3-3"/><path d="M3 12h15a3 3 0 1 1-3 3"/><path d="M3 16h9a2.4 2.4 0 1 1-2.4 2.4"/>'),
+    plumbing:   SVG('<path d="M12 3s6 6.4 6 10.5a6 6 0 0 1-12 0C6 9.4 12 3 12 3z"/>'),
+    roofing:    SVG('<path d="M3 11l9-7 9 7"/><path d="M5 10v9h14v-9"/>'),
+    restaurant: SVG('<path d="M8 2v6a3 3 0 0 1-6 0V2M5 2v6M5 11v11"/><path d="M19 2c-1.6 1.6-2 4.2-2 6.4 0 1.6 1 2.4 2 2.4v11.2"/>'),
+    dining:     SVG('<path d="M8 3h8l-1.1 6.2a3 3 0 0 1-5.8 0z"/><path d="M12 14v6M9 21h6"/>'),
+    beauty:     SVG('<path d="M12 2l2 5.2L19 9l-5 1.8L12 16l-2-5.2L5 9l5-1.8z"/><path d="M18 15l.7 1.8L20.5 17.5l-1.8.7L18 20l-.7-1.8L15.5 17.5l1.8-.7z"/>'),
+    services:   SVG('<path d="M12 5.5a2 2 0 1 1 2.2 2c-1 .3-1.2 1-1.2 1.8L21 15a1.6 1.6 0 0 1-1 2.9H4A1.6 1.6 0 0 1 3 15l9-5.7"/>'),
+    wellness:   SVG('<path d="M12 21c-4 0-7-2.6-7-6.2 2 0 3.6.8 4.8 2.2C9.6 13.4 8.3 10.2 12 7c3.7 3.2 2.4 6.4 2.2 10 1.2-1.4 2.8-2.2 4.8-2.2 0 3.6-3 6.2-7 6.2z"/>'),
+    fitness:    SVG('<path d="M6.5 8v8M4 9.5v5M17.5 8v8M20 9.5v5M6.5 12h11"/>'),
+  };
+
+  const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
   const projects    = window.PORTFOLIO_PROJECTS;
   const modalIframe = document.getElementById('modal-iframe');
   const modalTitle  = document.getElementById('modal-title');
@@ -215,14 +260,17 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
     projects.forEach(p => {
       const card = document.createElement('article');
       card.className = 'portfolio-card';
+      const label = CATEGORY_LABELS[p.category] || p.category || '';
+      const icon  = ICONS[p.category] || '';
       card.innerHTML = `
-        <div class="portfolio-card__thumb">
-          <img src="${p.thumb}" alt="${p.title} website screenshot" loading="lazy" draggable="false">
+        <div class="portfolio-card__poster" style="--accent:${esc(p.accent || '#1E90FF')}">
+          <div class="poster__top">
+            <span class="poster__icon">${icon}</span>
+            <span class="poster__cat">${esc(label)}</span>
+          </div>
+          <span class="poster__mono" aria-hidden="true">${esc(p.monogram || '')}</span>
+          <h3 class="poster__name">${esc(p.title)}</h3>
           <div class="portfolio-card__overlay"><span>View Project</span></div>
-        </div>
-        <div class="portfolio-card__body">
-          <span class="portfolio-card__trade">${TRADE_LABELS[p.trade] || p.trade}</span>
-          <h3 class="portfolio-card__title">${p.title}</h3>
         </div>`;
       card.addEventListener('click', () => {
         if (dragMoved) return;          // ignore the click that ends a drag
@@ -373,7 +421,7 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
   // Modal open/close — live-preview behavior preserved
   function openModal(project) {
     modalTitle.textContent = project.title;
-    modalBadge.textContent = TRADE_LABELS[project.trade] || project.trade;
+    modalBadge.textContent = CATEGORY_LABELS[project.category] || project.category;
     modalDesc.textContent  = project.description;
     if (project.live) modalIframe.src = project.live;
     if (modalCta) modalCta.href = project.live || '#';

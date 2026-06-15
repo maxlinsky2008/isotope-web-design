@@ -134,37 +134,107 @@
 
   <script>
   // Portfolio project data — add one entry per site you've built.
+  // Cards are generated as branded "poster tiles" (no screenshot files needed).
   //
-  // slug:        unique ID matching the folder in portfolio-sites/ AND the image in images/portfolio/
-  // title:       project or client name shown in the preview modal
-  // trade:       "hvac" | "plumbing" | "landscaping" | "roofing" | "other"
+  // slug:        unique ID, matches the folder in portfolio-sites/
+  // title:       business name shown on the card + preview modal
+  // category:    key into CATEGORY_LABELS + ICONS in js/main.js
+  //              ("hvac" | "plumbing" | "roofing" | "restaurant" | "dining"
+  //               | "beauty" | "services" | "wellness" | "fitness")
+  // monogram:    1–2 letters shown large on the poster tile
+  // accent:      brand color (hex) — drives the poster's duotone gradient
   // description: 1–2 sentence summary shown in the modal
-  // thumb:       path to the screenshot  (e.g. "images/portfolio/peak-hvac.jpg")
-  // live:        path to the site folder (e.g. "portfolio-sites/peak-hvac/index.html")
+  // live:        path to the site folder (e.g. "portfolio-sites/abc-plumbing/index.html")
   window.PORTFOLIO_PROJECTS = [
     {
-      slug: "shumate",
+      slug: "xyz-heating-air",
       title: "XYZ Heating & Air",
-      trade: "hvac",
-      description: "Multi-service site for one of Atlanta's largest home services companies — HVAC, plumbing, electrical, and handyman all under one brand.",
-      thumb: "images/portfolio/Demo 1 - Screenshot.jpg",
-      live: "portfolio-sites/Demo Website 1 - XYZ/index.html",
+      category: "hvac",
+      monogram: "XY",
+      accent: "#1E90FF",
+      description: "Multi-service home-services brand — HVAC, plumbing, electrical, and handyman under one roof, with a bold blue identity and dedicated service pages.",
+      live: "portfolio-sites/xyz-heating-air/index.html",
     },
     {
       slug: "abc-plumbing",
       title: "ABC Plumbing",
-      trade: "plumbing",
-      description: "A sharp, conversion-focused plumbing site with a clean light palette, bold typography, and dedicated pages for services, about, and contact.",
-      thumb: "images/portfolio/Demo 2 - Screenshot.jpg",
-      live: "portfolio-sites/Demo Website 2 - ABC Plumbing/index.html",
+      category: "plumbing",
+      monogram: "AB",
+      accent: "#0EA5E9",
+      description: "A conversion-focused plumbing site with a clean light palette, bold typography, and dedicated pages for services, about, and contact.",
+      live: "portfolio-sites/abc-plumbing/index.html",
     },
     {
       slug: "widget-hvac",
       title: "Widget HVAC",
-      trade: "hvac",
-      description: "Full-featured HVAC site with a blog, full on-page SEO (sitemap, schema markup), and a premium dark aesthetic for an Atlanta-area contractor.",
-      thumb: "images/portfolio/Demo 3 - Screenshot.jpg",
-      live: "portfolio-sites/Demo Website 3 - Widget HVAC/index.html",
+      category: "hvac",
+      monogram: "WH",
+      accent: "#E07B39",
+      description: "Premium dark-mode HVAC site with a full blog, on-page SEO (sitemap + schema markup), and a refined copper accent for an Atlanta-area contractor.",
+      live: "portfolio-sites/widget-hvac/index.html",
+    },
+    {
+      slug: "havana-sol",
+      title: "Havana Sol Cuban Kitchen",
+      category: "restaurant",
+      monogram: "HS",
+      accent: "#E8551F",
+      description: "Warm, sunlit site for a Cuban kitchen and mojito bar — menu, catering, and reservations wrapped in vibrant editorial styling.",
+      live: "portfolio-sites/havana-sol/index.html",
+    },
+    {
+      slug: "abc-nails",
+      title: "ABC Nails",
+      category: "beauty",
+      monogram: "AN",
+      accent: "#B0876A",
+      description: "An elegant nail salon and spa site with a soft gold-and-teal palette, a full service menu, and a booking-ready layout.",
+      live: "portfolio-sites/abc-nails/index.html",
+    },
+    {
+      slug: "magnolia-cleaners",
+      title: "Magnolia Cleaners",
+      category: "services",
+      monogram: "MC",
+      accent: "#B98736",
+      description: "A dry-cleaning and free pickup-delivery brand with looping video, transparent pricing, and an online scheduling flow.",
+      live: "portfolio-sites/magnolia-cleaners/index.html",
+    },
+    {
+      slug: "gilded-ox",
+      title: "The Gilded Ox",
+      category: "dining",
+      monogram: "GO",
+      accent: "#C8A96A",
+      description: "An upscale Buckhead chophouse site with a cinematic scroll experience, full menus, a wine list, and private-dining pages.",
+      live: "portfolio-sites/gilded-ox/index.html",
+    },
+    {
+      slug: "knead-atl",
+      title: "Knead ATL",
+      category: "wellness",
+      monogram: "KA",
+      accent: "#FF6A4D",
+      description: "A feel-good massage studio site in a calming coral palette, with clear service menus and a streamlined booking page.",
+      live: "portfolio-sites/knead-atl/index.html",
+    },
+    {
+      slug: "widget-roofing",
+      title: "Widget Roofing",
+      category: "roofing",
+      monogram: "WR",
+      accent: "#B4632A",
+      description: "A heritage roofing-contractor site with rich photography, a warm amber identity, and trust-building project showcases.",
+      live: "portfolio-sites/widget-roofing/index.html",
+    },
+    {
+      slug: "getfit-fitness",
+      title: "GetFit Fitness",
+      category: "fitness",
+      monogram: "GF",
+      accent: "#6FBF1A",
+      description: "A high-energy gym and coaching site with an electric lime identity, bold display type, and a class-focused layout.",
+      live: "portfolio-sites/getfit-fitness/index.html",
     },
   ];
   </script>
