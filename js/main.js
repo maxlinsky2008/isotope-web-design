@@ -245,6 +245,11 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
   let dragMoved   = false;
   let lastX       = 0;
 
+  // Mobile swipe state (horizontal drag of the scroll track)
+  let mDragging    = false;
+  let mStartX      = 0;
+  let mStartScroll = 0;
+
   function buildCards() {
     galleryStage.innerHTML = '';
     cards = [];
@@ -437,15 +442,75 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
   }
   function preventDrag(e) { e.preventDefault(); }
 
+  // Mobile swipe — we own the horizontal gesture so it behaves identically on
+  // iOS Safari, Android, and desktop touch. (Native overflow scrolling for a
+  // horizontal track is flaky on iOS, which is why the swipe "didn't work" on
+  // a phone.) CSS sets touch-action: pan-y on the track, so the browser still
+  // handles vertical page scrolling and hands us the horizontal drag as pointer
+  // events; we drive scrollLeft directly and snap to the nearest card on release.
+  function onMobileDown(e) {
+    mDragging = true;
+    dragMoved = false;
+    mStartX = e.clientX;
+    mStartScroll = gallery.scrollLeft;
+    gallery.classList.add('is-dragging');
+  }
+  function onMobileMove(e) {
+    if (!mDragging) return;
+    const dx = e.clientX - mStartX;
+    if (Math.abs(dx) > 3) dragMoved = true;
+    gallery.scrollLeft = mStartScroll - dx;   // drag left → reveal the next card
+  }
+  function onMobileUp() {
+    if (!mDragging) return;
+    mDragging = false;
+    gallery.classList.remove('is-dragging');
+    snapToNearestCard();
+    // clear dragMoved after the trailing click has been handled (so a real tap
+    // still opens the modal, but the click that ends a swipe does not)
+    requestAnimationFrame(() => requestAnimationFrame(() => { dragMoved = false; }));
+  }
+  // Smooth-scroll so the card nearest the track's center lands centered.
+  function snapToNearestCard() {
+    if (!cards.length) return;
+    const gRect = gallery.getBoundingClientRect();
+    const mid = gRect.left + gRect.width / 2;
+    let best = cards[0], bestD = Infinity;
+    cards.forEach(c => {
+      const r = c.getBoundingClientRect();
+      const d = Math.abs(r.left + r.width / 2 - mid);
+      if (d < bestD) { bestD = d; best = c; }
+    });
+    const r = best.getBoundingClientRect();
+    const delta = (r.left + r.width / 2) - mid;
+    gallery.scrollTo({ left: gallery.scrollLeft + delta, behavior: 'smooth' });
+  }
+
+  function bindMobileDrag() {
+    gallery.addEventListener('pointerdown', onMobileDown);
+    window.addEventListener('pointermove', onMobileMove);
+    window.addEventListener('pointerup', onMobileUp);
+    window.addEventListener('pointercancel', onMobileUp);
+  }
+  function unbindMobileDrag() {
+    gallery.removeEventListener('pointerdown', onMobileDown);
+    window.removeEventListener('pointermove', onMobileMove);
+    window.removeEventListener('pointerup', onMobileUp);
+    window.removeEventListener('pointercancel', onMobileUp);
+  }
+
   function applyMode() {
     isMobile = mobileQuery.matches;
     buildCards();
-    if (cards.length === 0) { stopRing(); unbindDrag(); return; }
     unbindDrag();
+    unbindMobileDrag();
+    if (cards.length === 0) { stopRing(); return; }
     if (isMobile) {
       stopRing();
       cards.forEach(c => { c.style.transform = ''; c.style.opacity = ''; });
       galleryStage.style.removeProperty('--ring-rot');
+      gallery.scrollLeft = 0;
+      bindMobileDrag();
     } else {
       bindDrag();
       startRing();

@@ -1111,13 +1111,16 @@ p { max-width: 68ch; }
     perspective: none;
     overflow-x: auto;
     overflow-y: hidden;
-    cursor: default;
-    touch-action: pan-x;
-    scroll-snap-type: x mandatory;
+    cursor: grab;
+    /* pan-y: the browser keeps vertical page scrolling; JS owns the horizontal
+       swipe (see bindMobileDrag in main.js). Native horizontal overflow
+       scrolling is unreliable on iOS, so we drive scrollLeft ourselves. */
+    touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     padding-block: 0.5rem 1rem;
   }
+  .gallery.is-dragging { cursor: grabbing; }
   .gallery::-webkit-scrollbar { display: none; }
 
   .gallery__stage {
@@ -1139,7 +1142,6 @@ p { max-width: 68ch; }
     flex: 0 0 auto;
     opacity: 1 !important;
     transform: none !important;
-    scroll-snap-align: center;
   }
   .gallery .portfolio-card__poster { aspect-ratio: 5 / 7; flex: initial; }
 
