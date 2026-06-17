@@ -325,6 +325,7 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
   // Glide to an absolute target index (drag-free; the easing in tick() animates there).
   function goTo(i) {
     target = i;
+    wake();   // re-arm the loop in case it had parked on the previous card
   }
 
   function updateDots() {
@@ -388,7 +389,15 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
       if (Math.abs(target - position) < 0.0005) position = target;
     }
     render();
-    rafId = requestAnimationFrame(tick);
+    // Idle once the glide has settled and no drag is in progress, instead of
+    // re-rendering all 10 cards at 60fps forever. Any input re-arms via wake().
+    const settled = !dragging && position === target;
+    rafId = settled ? null : requestAnimationFrame(tick);
+  }
+
+  // Re-arm the render loop after it has parked (mirrors the hero scrub's schedule()).
+  function wake() {
+    if (rafId === null) rafId = requestAnimationFrame(tick);
   }
 
   function startRing() {
@@ -407,6 +416,7 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
     dragMoved = false;
     lastX = e.clientX;
     gallery.classList.add('is-dragging');
+    wake();   // a parked loop must render the drag; dragging keeps it alive after
     // No setPointerCapture: window-level move/up listeners already track the
     // drag everywhere, and capture can divert the closing click off the card.
   }
@@ -422,6 +432,7 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
     dragging = false;
     gallery.classList.remove('is-dragging');
     target = Math.round(position);   // settle onto the nearest card
+    wake();   // keep easing to the snap target, then the loop parks itself
     // clear dragMoved after the trailing click has been handled
     requestAnimationFrame(() => requestAnimationFrame(() => { dragMoved = false; }));
   }
