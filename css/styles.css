@@ -1132,59 +1132,31 @@ p { max-width: 68ch; }
   .panel__full { transition: none; }
 }
 
-/* Touch / small screens: panels stack vertically so the slivers stay tappable.
-   The open panel (first by default, JS-driven) grows; the rest collapse. */
+/* Touch / small screens: drop the accordion. Every panel rests as a full
+   duotone poster card in one column; a single tap opens the live preview
+   (JS handles the tap — no two-step expand). */
 @media (max-width: 768px) {
   .panel-gallery {
     flex-direction: column;
     height: auto;
-    gap: 0.625rem;
+    gap: 0.75rem;
     width: 100%;
     margin-left: 0;
     transform: none;
   }
-  /* dissolve the row wrappers so all panels stack in one tappable column */
+  /* dissolve the row wrappers so all panels stack in one column */
   .panel-row {
     display: contents;
   }
   .panel {
     flex: 0 0 auto;
-    height: 4.5rem;
-    transition: height 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    height: clamp(190px, 30vh, 240px);
+    transition: transform 0.2s ease;
   }
-  .panel:hover,
-  .panel.is-open {
-    flex: 0 0 auto;
-    height: clamp(360px, 56vh, 460px);
-  }
-  /* On a collapsed bar the type sits on one centered line (icon + type); the
-     name kicker is dropped for space, and the demo badge centers vertically. */
-  .panel:not(:hover):not(.is-open) .panel__spine {
-    top: 50%;
-    left: 1.5rem;
-    right: 7rem;
-    bottom: auto;
-    translate: 0 -50%;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.6rem;
-  }
-  .panel:not(:hover):not(.is-open) .panel__spine-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    margin-bottom: 0;
-    flex: none;
-  }
-  .panel:not(:hover):not(.is-open) .panel__spine-type {
-    font-size: 1.25rem;
-  }
-  .panel:not(:hover):not(.is-open) .panel__spine-name {
-    display: none;
-  }
-  .panel:not(:hover):not(.is-open) .panel__demo {
-    top: 50%;
-    translate: 0 -50%;
-  }
+  .panel:active { transform: scale(0.985); }   /* tap feedback */
+  /* show the full poster as the resting card; hide the collapsed-bar content */
+  .panel__spine { display: none; }
+  .panel__full { opacity: 1; }
   @media (prefers-reduced-motion: reduce) {
     .panel { transition: none; }
   }
@@ -1306,9 +1278,14 @@ p { max-width: 68ch; }
   .portfolio-modal__info {
     border-right: none;
     border-bottom: 1px solid var(--border);
-    padding: 1.5rem;
+    padding: max(1.5rem, env(safe-area-inset-top)) 1.5rem 1.5rem;
   }
   .portfolio-modal__preview { min-height: 55vh; }
+  /* keep the close control out from under the notch */
+  .portfolio-modal__close {
+    top: max(1rem, env(safe-area-inset-top));
+    right: max(1rem, env(safe-area-inset-right));
+  }
 }
 
 /* ─── FOOTER ───────────────────────────────────────────────── */
@@ -1381,12 +1358,30 @@ p { max-width: 68ch; }
 }
 
 @media (max-width: 640px) {
+  /* Belt-and-braces against any element spilling sideways on a phone. Scoped to
+     mobile so it can't affect the desktop sticky service-block sidebar (which is
+     already static at this width). */
+  html, body { overflow-x: hidden; }
+
   .nav__links { display: none; }
   .nav__toggle { display: flex; }
   .nav__cta-desktop { display: none; }
 
-  .has-scrub .hero { height: 180vh; }   /* shorter scrub on phones */
-  .hero__video { height: auto; width: 150vw; }
+  /* Keep the fixed bar and its drawer clear of notch / rounded corners. */
+  .nav__inner,
+  .nav__drawer { padding-left: max(1.25rem, env(safe-area-inset-left));
+                 padding-right: max(1.25rem, env(safe-area-inset-right)); }
+
+  /* 16px inputs stop iOS Safari from auto-zooming the page on focus. */
+  .form-group input,
+  .form-group select,
+  .form-group textarea { font-size: 16px; }
+
+  /* Phones get a clean static hero (no scrub — see index.html / main.js).
+     Size the centered atom to sit calmly behind the copy; .hero__media is
+     overflow:hidden so it never spills into a horizontal scroll. */
+  .hero__video { height: auto; width: clamp(118%, 132vw, 150vw); }
+  .hero__cue { display: none; }   /* nothing to scrub through; copy is all shown */
 
   .hero__ctas { flex-direction: column; align-items: stretch; width: 100%; }
   .hero__ctas .btn { text-align: center; justify-content: center; }

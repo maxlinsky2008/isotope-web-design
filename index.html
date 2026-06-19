@@ -22,8 +22,13 @@
   <link rel="stylesheet" href="css/styles.css">
   <script>
     /* Enable the scroll-scrub hero before first paint so the stepped copy
-       starts hidden (no flash). JS-off visitors keep a normal static hero. */
-    document.documentElement.classList.add('has-scrub');
+       starts hidden (no flash). JS-off visitors keep a normal static hero.
+       Phones / touch devices skip the scrub entirely: frame-accurate video
+       seeking on touch scroll stutters, so they get a clean static hero with
+       the copy shown immediately (handled in main.js). */
+    if (!window.matchMedia('(hover: none), (max-width: 640px)').matches) {
+      document.documentElement.classList.add('has-scrub');
+    }
   </script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RNKSPRFZEL"></script>
   <script>

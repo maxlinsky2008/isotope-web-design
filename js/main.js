@@ -62,6 +62,10 @@ const heroVideo = document.querySelector('.hero__video');
 const heroSteps = Array.from(document.querySelectorAll('.hero__step'));
 
 if (heroEl && heroVideo) {
+  // The scroll-scrub is only armed on hover-capable, wide screens (set before
+  // paint in index.html). Phones / touch devices land in the static branch.
+  const wantsScrub = document.documentElement.classList.contains('has-scrub');
+
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     // Static fallback (CSS collapses the track): show all copy, rest on a
     // fully-formed frame, no scrubbing.
@@ -71,6 +75,21 @@ if (heroEl && heroVideo) {
     };
     if (heroVideo.readyState >= 1) showFinal();
     else heroVideo.addEventListener('loadedmetadata', showFinal, { once: true });
+  } else if (!wantsScrub) {
+    // Mobile / touch: no scroll-scrub. Copy is already visible (CSS), so just
+    // play the brand atom once, gently. If autoplay is blocked, rest on the
+    // finished frame. No scroll listeners, no per-frame seeking — smooth.
+    heroSteps.forEach(step => step.classList.add('is-in'));
+    const playOnce = () => {
+      const p = heroVideo.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(() => {
+          try { heroVideo.currentTime = Math.max(0, (heroVideo.duration || 0) - 0.05); } catch (e) {}
+        });
+      }
+    };
+    if (heroVideo.readyState >= 1) playOnce();
+    else heroVideo.addEventListener('loadedmetadata', playOnce, { once: true });
   } else {
     const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 
@@ -218,9 +237,15 @@ if (panelGallery && typeof window.PORTFOLIO_PROJECTS !== 'undefined') {
   const modalDesc   = document.getElementById('modal-desc');
   const modalCta    = document.getElementById('modal-cta');
 
-  // Touch devices can't hover, so panels expand on tap instead. The first panel
-  // starts open; tapping a closed panel opens it, tapping the open one previews.
+  // Desktop hovers a panel to expand it, then clicks to preview. Touch devices
+  // can't hover, so on touch each panel rests as a full poster card (CSS) and a
+  // single tap opens the preview.
   const isTouch = window.matchMedia('(hover: none)').matches;
+  if (isTouch) {
+    const headP = document.querySelector('.panel-gallery__head p');
+    if (headP) headP.textContent =
+      'Real websites built for local businesses — tap any project to preview the live site.';
+  }
 
   const PER_ROW = 5;
 
@@ -241,7 +266,7 @@ if (panelGallery && typeof window.PORTFOLIO_PROJECTS !== 'undefined') {
         panelGallery.appendChild(row);
       }
       const panel = document.createElement('article');
-      panel.className = 'panel' + (isTouch && i === 0 ? ' is-open' : '');
+      panel.className = 'panel';
       panel.setAttribute('role', 'listitem');
       const label = CATEGORY_LABELS[p.category] || p.category || '';
       const icon  = ICONS[p.category] || '';
@@ -265,16 +290,7 @@ if (panelGallery && typeof window.PORTFOLIO_PROJECTS !== 'undefined') {
             <span class="panel__cta">View Project →</span>
           </div>
         </div>`;
-      panel.addEventListener('click', () => {
-        if (isTouch && !panel.classList.contains('is-open')) {
-          // first tap just expands this panel; a second tap opens the preview
-          panelGallery.querySelectorAll('.panel.is-open')
-            .forEach(el => el.classList.remove('is-open'));
-          panel.classList.add('is-open');
-          return;
-        }
-        openModal(p);
-      });
+      panel.addEventListener('click', () => openModal(p));
       row.appendChild(panel);
     });
   }
