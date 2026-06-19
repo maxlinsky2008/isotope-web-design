@@ -181,12 +181,11 @@ if (heroEl && heroVideo) {
   }
 }
 
-// Portfolio — 3D circular gallery (auto-rotate + drag, with a mobile fallback)
-const gallery        = document.getElementById('portfolio-gallery');
-const galleryStage   = document.getElementById('gallery-stage');
+// Portfolio — expanding-panel gallery (hover to grow on desktop, tap on touch)
+const panelGallery   = document.getElementById('portfolio-panels');
 const portfolioModal = document.getElementById('portfolio-modal');
 
-if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined') {
+if (panelGallery && typeof window.PORTFOLIO_PROJECTS !== 'undefined') {
   const CATEGORY_LABELS = {
     hvac: 'HVAC', plumbing: 'Plumbing', roofing: 'Roofing',
     restaurant: 'Restaurant', dining: 'Fine Dining', beauty: 'Nail Salon',
@@ -213,334 +212,74 @@ if (gallery && galleryStage && typeof window.PORTFOLIO_PROJECTS !== 'undefined')
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   const projects    = window.PORTFOLIO_PROJECTS;
-  const galleryDots = document.getElementById('gallery-dots');
-  const prevBtn     = document.getElementById('gallery-prev');
-  const nextBtn     = document.getElementById('gallery-next');
   const modalIframe = document.getElementById('modal-iframe');
   const modalTitle  = document.getElementById('modal-title');
   const modalBadge  = document.getElementById('modal-badge');
   const modalDesc   = document.getElementById('modal-desc');
   const modalCta    = document.getElementById('modal-cta');
 
-  const mobileQuery  = window.matchMedia('(max-width: 640px)');
+  // Touch devices can't hover, so panels expand on tap instead. The first panel
+  // starts open; tapping a closed panel opens it, tapping the open one previews.
+  const isTouch = window.matchMedia('(hover: none)').matches;
 
-  // Coverflow tuning — one "step" = the distance to the next card.
-  const SPREAD       = 340;    // px a neighbor sits to the side of the focus
-  const TILT         = 50;     // deg a neighbor is angled inward
-  const DEPTH        = 190;    // px a neighbor is pushed back
-  const SCALE_STEP   = 0.07;   // shrink per step away from the focus
-  const EASE         = 0.10;   // how snappily the glide settles on a card
-  const DRAG_PX      = 260;    // pixels dragged to move the focus by one card
+  const PER_ROW = 5;
 
-  let cards    = [];
-  let dots     = [];
-  let activeDot = -1;     // index currently flagged active (avoids redundant DOM writes)
-  let position = 0;       // fractional focus index; integer = a card centered
-  let target   = 0;       // the card the gallery is gliding toward
-  let rafId    = null;
-  let isMobile = mobileQuery.matches;
-
-  // Drag state
-  let dragging    = false;
-  let dragMoved   = false;
-  let lastX       = 0;
-
-  // Mobile swipe state (horizontal drag of the scroll track)
-  let mDragging    = false;
-  let mStartX      = 0;
-  let mStartScroll = 0;
-
-  function buildCards() {
-    galleryStage.innerHTML = '';
-    cards = [];
-    gallery.classList.remove('portfolio-empty');
+  function buildPanels() {
+    panelGallery.innerHTML = '';
 
     if (projects.length === 0) {
-      galleryStage.innerHTML = '<div class="portfolio-empty"><p>Projects coming soon.</p></div>';
+      panelGallery.innerHTML = '<div class="portfolio-empty"><p>Projects coming soon.</p></div>';
       return;
     }
 
-    projects.forEach(p => {
-      const card = document.createElement('article');
-      card.className = 'portfolio-card';
+    let row = null;
+    projects.forEach((p, i) => {
+      // start a new row every PER_ROW panels
+      if (i % PER_ROW === 0) {
+        row = document.createElement('div');
+        row.className = 'panel-row';
+        panelGallery.appendChild(row);
+      }
+      const panel = document.createElement('article');
+      panel.className = 'panel' + (isTouch && i === 0 ? ' is-open' : '');
+      panel.setAttribute('role', 'listitem');
       const label = CATEGORY_LABELS[p.category] || p.category || '';
       const icon  = ICONS[p.category] || '';
-      card.innerHTML = `
+      panel.innerHTML = `
         <div class="portfolio-card__poster" style="--accent:${esc(p.accent || '#1E90FF')}">
-          <div class="poster__top">
-            <span class="poster__icon">${icon}</span>
-            <span class="poster__brand">${esc(p.title)}</span>
+          <span class="panel__demo"><span class="panel__demo-dot"></span>Demo Site</span>
+          <span class="panel__spine">
+            <span class="panel__spine-icon">${icon}</span>
+            <span class="panel__spine-type">${esc(label)}</span>
+            <span class="panel__spine-name">${esc(p.title)}</span>
+          </span>
+          <div class="panel__full">
+            <div class="poster__top">
+              <span class="poster__icon">${icon}</span>
+              <span class="poster__brand">${esc(p.title)}</span>
+            </div>
+            <h3 class="poster__headline">
+              <span class="poster__type">${esc(label)}</span>
+              <span class="poster__kind">Demo Website</span>
+            </h3>
+            <span class="panel__cta">View Project →</span>
           </div>
-          <h3 class="poster__headline">
-            <span class="poster__type">${esc(label)}</span>
-            <span class="poster__kind">Demo Website</span>
-          </h3>
-          <div class="portfolio-card__overlay"><span>View Project</span></div>
         </div>`;
-      card.addEventListener('click', () => {
-        if (dragMoved) return;          // ignore the click that ends a drag
+      panel.addEventListener('click', () => {
+        if (isTouch && !panel.classList.contains('is-open')) {
+          // first tap just expands this panel; a second tap opens the preview
+          panelGallery.querySelectorAll('.panel.is-open')
+            .forEach(el => el.classList.remove('is-open'));
+          panel.classList.add('is-open');
+          return;
+        }
         openModal(p);
       });
-      galleryStage.appendChild(card);
-      cards.push(card);
-    });
-
-    buildDots();
-  }
-
-  // One dot per project; clicking a dot glides the focus straight to it.
-  function buildDots() {
-    if (!galleryDots) return;
-    galleryDots.innerHTML = '';
-    dots = [];
-    activeDot = -1;
-    projects.forEach((p, i) => {
-      const dot = document.createElement('button');
-      dot.type = 'button';
-      dot.className = 'gallery__dot';
-      dot.setAttribute('role', 'tab');
-      dot.setAttribute('aria-label', p.title);
-      dot.setAttribute('aria-selected', 'false');
-      dot.addEventListener('click', () => goTo(target + shortestDelta(i)));
-      galleryDots.appendChild(dot);
-      dots.push(dot);
+      row.appendChild(panel);
     });
   }
 
-  // Focused card index, normalized into [0, n).
-  function focusIndex() {
-    const n = cards.length;
-    return n ? ((Math.round(position) % n) + n) % n : 0;
-  }
-
-  // Steps from the current target to card `i`, taking the short way around the ring.
-  function shortestDelta(i) {
-    const n = cards.length;
-    let d = (i - Math.round(target)) % n;
-    if (d >  n / 2) d -= n;
-    if (d < -n / 2) d += n;
-    return d;
-  }
-
-  // Glide to an absolute target index (drag-free; the easing in tick() animates there).
-  function goTo(i) {
-    target = i;
-    wake();   // re-arm the loop in case it had parked on the previous card
-  }
-
-  function updateDots() {
-    if (!dots.length) return;
-    const idx = focusIndex();
-    if (idx === activeDot) return;       // only touch the DOM when the focus changes
-    if (dots[activeDot]) {
-      dots[activeDot].classList.remove('is-active');
-      dots[activeDot].setAttribute('aria-selected', 'false');
-    }
-    if (dots[idx]) {
-      dots[idx].classList.add('is-active');
-      dots[idx].setAttribute('aria-selected', 'true');
-    }
-    activeDot = idx;
-  }
-
-  // Place every card relative to the current focus, coverflow-style: the
-  // focused card faces us; the two neighbors angle inward and sit just to the
-  // sides so their inner corners peek out. A card rotating past a neighbor
-  // folds back behind the focus and fades, so the loop is seamless + infinite.
-  function render() {
-    const n = cards.length;
-    const denom = n / 2 - 1;   // span over which a far card folds away
-    cards.forEach((card, i) => {
-      let rel = (i - position) % n;          // signed steps to the focus, wrapped
-      if (rel >  n / 2) rel -= n;
-      if (rel < -n / 2) rel += n;
-      const a = Math.abs(rel);
-      const s = rel < 0 ? -1 : 1;
-
-      let x, z, rot, opacity, scale;
-      if (a <= 1) {
-        x = s * a * SPREAD;
-        z = -a * DEPTH;
-        rot = s * a * TILT;
-        opacity = 1;
-        scale = 1 - a * SCALE_STEP;
-      } else {
-        // beyond the nearest neighbor: fold back behind the focus and fade out
-        const t = denom > 0 ? Math.min(1, (a - 1) / denom) : 1;
-        x = s * SPREAD * (1 - t);
-        z = -DEPTH * (1 + t * 2);
-        rot = s * (TILT + t * 25);
-        opacity = 1 - t;
-        scale = (1 - SCALE_STEP) * (1 - t * 0.25);
-      }
-
-      card.style.transform =
-        `translateX(${x}px) translateZ(${z}px) rotateY(${rot}deg) scale(${scale})`;
-      card.style.opacity = Math.max(0, opacity).toFixed(3);
-    });
-    updateDots();
-  }
-
-  function tick() {
-    // No auto-advance: the focus only moves when the user drags, taps an arrow,
-    // or picks a dot. The loop just eases the glide onto the chosen target.
-    if (!dragging) {
-      position += (target - position) * EASE;   // ease/settle onto the target card
-      if (Math.abs(target - position) < 0.0005) position = target;
-    }
-    render();
-    // Idle once the glide has settled and no drag is in progress, instead of
-    // re-rendering all 10 cards at 60fps forever. Any input re-arms via wake().
-    const settled = !dragging && position === target;
-    rafId = settled ? null : requestAnimationFrame(tick);
-  }
-
-  // Re-arm the render loop after it has parked (mirrors the hero scrub's schedule()).
-  function wake() {
-    if (rafId === null) rafId = requestAnimationFrame(tick);
-  }
-
-  function startRing() {
-    stopRing();
-    render();
-    rafId = requestAnimationFrame(tick);
-  }
-  function stopRing() {
-    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-  }
-
-  // Drag-to-spin (desktop / tablet)
-  function onPointerDown(e) {
-    if (isMobile) return;
-    dragging = true;
-    dragMoved = false;
-    lastX = e.clientX;
-    gallery.classList.add('is-dragging');
-    wake();   // a parked loop must render the drag; dragging keeps it alive after
-    // No setPointerCapture: window-level move/up listeners already track the
-    // drag everywhere, and capture can divert the closing click off the card.
-  }
-  function onPointerMove(e) {
-    if (!dragging) return;
-    const dx = e.clientX - lastX;
-    if (Math.abs(dx) > 2) dragMoved = true;
-    lastX = e.clientX;
-    position -= dx / DRAG_PX;   // drag right → the previous card swings in
-  }
-  function onPointerUp() {
-    if (!dragging) return;
-    dragging = false;
-    gallery.classList.remove('is-dragging');
-    target = Math.round(position);   // settle onto the nearest card
-    wake();   // keep easing to the snap target, then the loop parks itself
-    // clear dragMoved after the trailing click has been handled
-    requestAnimationFrame(() => requestAnimationFrame(() => { dragMoved = false; }));
-  }
-
-  function bindDrag() {
-    gallery.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
-    window.addEventListener('pointercancel', onPointerUp);
-    gallery.addEventListener('dragstart', preventDrag);
-  }
-  function unbindDrag() {
-    gallery.removeEventListener('pointerdown', onPointerDown);
-    window.removeEventListener('pointermove', onPointerMove);
-    window.removeEventListener('pointerup', onPointerUp);
-    window.removeEventListener('pointercancel', onPointerUp);
-    gallery.removeEventListener('dragstart', preventDrag);
-  }
-  function preventDrag(e) { e.preventDefault(); }
-
-  // Mobile swipe — we own the horizontal gesture so it behaves identically on
-  // iOS Safari, Android, and desktop touch. (Native overflow scrolling for a
-  // horizontal track is flaky on iOS, which is why the swipe "didn't work" on
-  // a phone.) CSS sets touch-action: pan-y on the track, so the browser still
-  // handles vertical page scrolling and hands us the horizontal drag as pointer
-  // events; we drive scrollLeft directly and snap to the nearest card on release.
-  function onMobileDown(e) {
-    mDragging = true;
-    dragMoved = false;
-    mStartX = e.clientX;
-    mStartScroll = gallery.scrollLeft;
-    gallery.classList.add('is-dragging');
-  }
-  function onMobileMove(e) {
-    if (!mDragging) return;
-    const dx = e.clientX - mStartX;
-    if (Math.abs(dx) > 3) dragMoved = true;
-    gallery.scrollLeft = mStartScroll - dx;   // drag left → reveal the next card
-  }
-  function onMobileUp() {
-    if (!mDragging) return;
-    mDragging = false;
-    gallery.classList.remove('is-dragging');
-    snapToNearestCard();
-    // clear dragMoved after the trailing click has been handled (so a real tap
-    // still opens the modal, but the click that ends a swipe does not)
-    requestAnimationFrame(() => requestAnimationFrame(() => { dragMoved = false; }));
-  }
-  // Smooth-scroll so the card nearest the track's center lands centered.
-  function snapToNearestCard() {
-    if (!cards.length) return;
-    const gRect = gallery.getBoundingClientRect();
-    const mid = gRect.left + gRect.width / 2;
-    let best = cards[0], bestD = Infinity;
-    cards.forEach(c => {
-      const r = c.getBoundingClientRect();
-      const d = Math.abs(r.left + r.width / 2 - mid);
-      if (d < bestD) { bestD = d; best = c; }
-    });
-    const r = best.getBoundingClientRect();
-    const delta = (r.left + r.width / 2) - mid;
-    gallery.scrollTo({ left: gallery.scrollLeft + delta, behavior: 'smooth' });
-  }
-
-  function bindMobileDrag() {
-    gallery.addEventListener('pointerdown', onMobileDown);
-    window.addEventListener('pointermove', onMobileMove);
-    window.addEventListener('pointerup', onMobileUp);
-    window.addEventListener('pointercancel', onMobileUp);
-  }
-  function unbindMobileDrag() {
-    gallery.removeEventListener('pointerdown', onMobileDown);
-    window.removeEventListener('pointermove', onMobileMove);
-    window.removeEventListener('pointerup', onMobileUp);
-    window.removeEventListener('pointercancel', onMobileUp);
-  }
-
-  function applyMode() {
-    isMobile = mobileQuery.matches;
-    buildCards();
-    unbindDrag();
-    unbindMobileDrag();
-    if (cards.length === 0) { stopRing(); return; }
-    if (isMobile) {
-      stopRing();
-      cards.forEach(c => { c.style.transform = ''; c.style.opacity = ''; });
-      galleryStage.style.removeProperty('--ring-rot');
-      gallery.scrollLeft = 0;
-      bindMobileDrag();
-    } else {
-      bindDrag();
-      startRing();
-    }
-  }
-
-  // Arrow buttons step the focus one card at a time (the ring wraps both ways).
-  // Hidden on mobile via CSS, so these only fire in the coverflow view.
-  if (prevBtn) prevBtn.addEventListener('click', () => goTo(target - 1));
-  if (nextBtn) nextBtn.addEventListener('click', () => goTo(target + 1));
-
-  applyMode();
-
-  // Re-evaluate on breakpoint changes (resize / orientation)
-  if (mobileQuery.addEventListener) {
-    mobileQuery.addEventListener('change', applyMode);
-  } else if (mobileQuery.addListener) {
-    mobileQuery.addListener(applyMode); // Safari < 14
-  }
+  buildPanels();
 
   // Modal open/close — live-preview behavior preserved
   function openModal(project) {

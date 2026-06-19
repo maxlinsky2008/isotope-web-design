@@ -890,63 +890,60 @@ p { max-width: 68ch; }
 
 .portfolio-section { padding-bottom: clamp(5rem, 9vw, 7rem); }
 
-/* 3D circular gallery — the ring auto-rotates and can be dragged to spin.
-   JS sets each card's rotateY()/translateZ() + opacity inline. */
-.gallery {
-  position: relative;
-  height: clamp(620px, 76vh, 780px);
-  margin-top: 1rem;
-  perspective: 2200px;
-  overflow: hidden;
-  cursor: grab;
-  touch-action: pan-y;
-  -webkit-user-select: none;
-  user-select: none;
-}
-.gallery.is-dragging { cursor: grabbing; }
-
-.gallery__stage {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 0;
-  height: 0;
-  transform-style: preserve-3d;
-  transform: rotateY(var(--ring-rot, 0deg));
-}
-
-.gallery__hint {
+/* Expanding-panel gallery — a row of equal slivers; hovering (or tapping, on
+   touch) one grows it to reveal the full branded poster. */
+.panel-gallery__head {
   text-align: center;
+  max-width: 46rem;
+  margin: 0 auto clamp(2rem, 4vw, 3rem);
+}
+.panel-gallery__head h2 {
+  font-size: clamp(1.875rem, 4vw, 2.75rem);
+  margin-bottom: 0.75rem;
+}
+.panel-gallery__head p {
   color: var(--mid);
-  font-size: 0.9375rem;
-  margin-top: 1.75rem;
+  font-size: 1.0625rem;
+  max-width: 54ch;
   margin-inline: auto;
-  max-width: none;
 }
 
-.portfolio-card {
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: 0 1px 3px oklch(0 0 0 / 0.08), 0 10px 30px oklch(0 0 0 / 0.14);
-  cursor: pointer;
-  background: var(--surface);
-  border: 1px solid var(--border);
-}
-
-/* Position each card on the ring; the inline transform handles rotateY/translateZ. */
-.gallery .portfolio-card {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 400px;
-  height: 540px;
-  margin-left: -200px;
-  margin-top: -270px;
+.panel-gallery {
   display: flex;
   flex-direction: column;
-  backface-visibility: hidden;
-  will-change: transform, opacity;
-  transition: box-shadow 0.22s;
+  gap: 0.5rem;
+  width: min(96vw, 1480px);
+  margin-inline: auto;
+  margin-left: 50%;
+  transform: translateX(-50%);   /* center the wider row over the narrower container */
+}
+.panel-row {
+  display: flex;
+  gap: 0.5rem;
+  height: clamp(360px, 46vh, 460px);
+}
+
+.panel {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 1px 3px oklch(0 0 0 / 0.08), 0 10px 30px oklch(0 0 0 / 0.14);
+  transition: flex-grow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.panel:hover,
+.panel.is-open { flex-grow: 7; }
+
+/* The poster fills the whole panel rather than sitting in a fixed-size card. */
+.panel .portfolio-card__poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  flex: initial;
+  padding: clamp(1.25rem, 2vw, 2rem);
 }
 
 /* Branded "poster tile" — a uniform, screenshot-free card generated per site.
@@ -1024,20 +1021,95 @@ p { max-width: 68ch; }
   letter-spacing: -0.01em;
   color: rgba(255,255,255,0.9);
 }
-.portfolio-card:hover .portfolio-card__poster::before { background: linear-gradient(125deg, rgba(255,255,255,0.16) 0%, transparent 46%); }
+.panel:hover .portfolio-card__poster::before,
+.panel.is-open .portfolio-card__poster::before { background: linear-gradient(125deg, rgba(255,255,255,0.16) 0%, transparent 46%); }
 
-.portfolio-card__overlay {
+/* Always-on "Demo Site" badge — visible whether the panel is collapsed or open,
+   so it's clear every card is a demo build, not a live client site. */
+.panel__demo {
   position: absolute;
-  inset: 0;
-  background: oklch(0.18 0.04 143 / 0.82);
-  display: flex;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 4;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.22s;
+  gap: 0.45rem;
+  padding: 0.34rem 0.72rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #fff;
+  background: rgba(0,0,0,0.30);
+  border: 1px solid rgba(255,255,255,0.45);
+  border-radius: 2rem;
 }
-.portfolio-card:hover .portfolio-card__overlay { opacity: 1; }
-.portfolio-card__overlay span {
+.panel__demo-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 0.18rem rgba(255,255,255,0.28);
+}
+
+/* Collapsed state: the business TYPE leads (with its icon), name as a kicker. */
+.panel__spine {
+  position: absolute;
+  left: clamp(1.25rem, 1.6vw, 1.875rem);
+  right: clamp(1.25rem, 1.6vw, 1.875rem);
+  bottom: 1.625rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  color: #fff;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.28);
+  transition: opacity 0.4s;
+}
+.panel__spine-icon {
+  width: 1.875rem;
+  height: 1.875rem;
+  margin-bottom: 0.3rem;
+  color: rgba(255,255,255,0.92);
+}
+.panel__spine-icon svg { width: 100%; height: 100%; }
+.panel__spine-type {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 2vw, 1.875rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.panel__spine-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.78);
+}
+.panel:hover .panel__spine,
+.panel.is-open .panel__spine { opacity: 0; transition: opacity 0.2s; }
+
+/* Expanded state: the full poster fades in once the panel grows. */
+.panel__full {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.45s ease 0.08s;
+}
+.panel:hover .panel__full,
+.panel.is-open .panel__full { opacity: 1; }
+
+.panel__cta {
+  margin-top: 1.25rem;
+  align-self: flex-start;
   color: #fff;
   font-family: var(--font-display);
   font-weight: 600;
@@ -1045,6 +1117,7 @@ p { max-width: 68ch; }
   border: 1.5px solid rgba(255,255,255,0.55);
   padding: 0.5rem 1.25rem;
   border-radius: 2rem;
+  white-space: nowrap;
 }
 
 .portfolio-empty {
@@ -1053,108 +1126,68 @@ p { max-width: 68ch; }
   color: var(--mid);
 }
 
-/* Prev / next arrows — sit just inside the gallery edges, above the cards. */
-.gallery__arrow {
-  position: absolute;
-  top: 50%;
-  z-index: 5;
-  transform: translateY(-50%);
-  width: 3.25rem;
-  height: 3.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--ink, #1a1a1a);
-  box-shadow: 0 2px 6px oklch(0 0 0 / 0.08), 0 12px 28px oklch(0 0 0 / 0.16);
-  cursor: pointer;
-  transition: transform 0.18s, box-shadow 0.18s, background 0.18s, color 0.18s;
-}
-.gallery__arrow:hover {
-  background: var(--green);
-  color: #fff;
-  border-color: transparent;
-  transform: translateY(-50%) scale(1.06);
-}
-.gallery__arrow:active { transform: translateY(-50%) scale(0.96); }
-.gallery__arrow:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
-.gallery__arrow svg { width: 1.5rem; height: 1.5rem; }
-.gallery__arrow--prev { left: clamp(0.5rem, 3vw, 2.5rem); }
-.gallery__arrow--next { right: clamp(0.5rem, 3vw, 2.5rem); }
-
-/* Dot indicators — one per project; the active dot tracks the focused card. */
-.gallery__dots {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.625rem;
-  margin-top: 1.5rem;
-}
-.gallery__dot {
-  width: 0.75rem;
-  height: 0.75rem;
-  padding: 0;
-  border-radius: 50%;
-  border: none;
-  background: oklch(0 0 0 / 0.18);
-  cursor: pointer;
-  transition: transform 0.18s, background 0.18s;
-}
-.gallery__dot:hover { background: oklch(0 0 0 / 0.34); transform: scale(1.15); }
-.gallery__dot:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
-.gallery__dot.is-active {
-  background: var(--green);
-  transform: scale(1.25);
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .panel__spine,
+  .panel__full { transition: none; }
 }
 
-/* Mobile: flatten the ring into a tap-friendly, swipeable scroll-snap carousel. */
-@media (max-width: 640px) {
-  .gallery {
+/* Touch / small screens: panels stack vertically so the slivers stay tappable.
+   The open panel (first by default, JS-driven) grows; the rest collapse. */
+@media (max-width: 768px) {
+  .panel-gallery {
+    flex-direction: column;
     height: auto;
-    perspective: none;
-    overflow-x: auto;
-    overflow-y: hidden;
-    cursor: grab;
-    /* pan-y: the browser keeps vertical page scrolling; JS owns the horizontal
-       swipe (see bindMobileDrag in main.js). Native horizontal overflow
-       scrolling is unreliable on iOS, so we drive scrollLeft ourselves. */
-    touch-action: pan-y;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-block: 0.5rem 1rem;
-  }
-  .gallery.is-dragging { cursor: grabbing; }
-  .gallery::-webkit-scrollbar { display: none; }
-
-  .gallery__stage {
-    position: static;
+    gap: 0.625rem;
+    width: 100%;
+    margin-left: 0;
     transform: none;
-    width: auto;
-    height: auto;
-    display: flex;
-    gap: 1rem;
-    padding-inline: 1.25rem;
   }
-
-  .gallery .portfolio-card {
-    position: static;
-    margin: 0;
-    width: 78vw;
-    max-width: 320px;
-    height: auto;
+  /* dissolve the row wrappers so all panels stack in one tappable column */
+  .panel-row {
+    display: contents;
+  }
+  .panel {
     flex: 0 0 auto;
-    opacity: 1 !important;
-    transform: none !important;
+    height: 4.5rem;
+    transition: height 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .gallery .portfolio-card__poster { aspect-ratio: 5 / 7; flex: initial; }
-
-  /* Mobile already swipes via scroll-snap — hide the coverflow controls. */
-  .gallery__arrow,
-  .gallery__dots { display: none; }
-
-  .gallery__hint { margin-top: 1.25rem; }
+  .panel:hover,
+  .panel.is-open {
+    flex: 0 0 auto;
+    height: clamp(360px, 56vh, 460px);
+  }
+  /* On a collapsed bar the type sits on one centered line (icon + type); the
+     name kicker is dropped for space, and the demo badge centers vertically. */
+  .panel:not(:hover):not(.is-open) .panel__spine {
+    top: 50%;
+    left: 1.5rem;
+    right: 7rem;
+    bottom: auto;
+    translate: 0 -50%;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .panel:not(:hover):not(.is-open) .panel__spine-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-bottom: 0;
+    flex: none;
+  }
+  .panel:not(:hover):not(.is-open) .panel__spine-type {
+    font-size: 1.25rem;
+  }
+  .panel:not(:hover):not(.is-open) .panel__spine-name {
+    display: none;
+  }
+  .panel:not(:hover):not(.is-open) .panel__demo {
+    top: 50%;
+    translate: 0 -50%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .panel { transition: none; }
+  }
 }
 
 .portfolio-modal {

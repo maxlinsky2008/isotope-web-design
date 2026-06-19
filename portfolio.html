@@ -68,17 +68,11 @@
 
     <section class="portfolio-section">
       <div class="container">
-        <div class="gallery" id="portfolio-gallery" role="region" aria-label="Project gallery" aria-roledescription="carousel">
-          <button class="gallery__arrow gallery__arrow--prev" id="gallery-prev" type="button" aria-label="Previous project">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
-          </button>
-          <div class="gallery__stage" id="gallery-stage"></div>
-          <button class="gallery__arrow gallery__arrow--next" id="gallery-next" type="button" aria-label="Next project">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
-          </button>
+        <div class="panel-gallery__head reveal">
+          <h2>Our Latest Creations</h2>
+          <p>Real websites built for local businesses — hover a panel to expand it, then click to preview the live site.</p>
         </div>
-        <div class="gallery__dots" id="gallery-dots" role="tablist" aria-label="Choose a project"></div>
-        <p class="gallery__hint" id="gallery-hint">Use the arrows or dots — or drag — to explore. Click a project to view it live.</p>
+        <div class="panel-gallery" id="portfolio-panels" role="list" aria-label="Project gallery"></div>
       </div>
     </section>
   </main>
