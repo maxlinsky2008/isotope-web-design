@@ -68,7 +68,9 @@ if (heroEl && heroVideo) {
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     // Static fallback (CSS collapses the track): show all copy, rest on a
-    // fully-formed frame, no scrubbing.
+    // fully-formed frame, no scrubbing. hero--in reveals the mobile atom stage
+    // (reduced-motion CSS strips the transition so nothing animates).
+    heroEl.classList.add('hero--in');
     heroSteps.forEach(step => step.classList.add('is-in'));
     const showFinal = () => {
       try { heroVideo.currentTime = Math.max(0, (heroVideo.duration || 0) - 0.05); } catch (e) {}
@@ -76,10 +78,14 @@ if (heroEl && heroVideo) {
     if (heroVideo.readyState >= 1) showFinal();
     else heroVideo.addEventListener('loadedmetadata', showFinal, { once: true });
   } else if (!wantsScrub) {
-    // Mobile / touch: no scroll-scrub. Copy is already visible (CSS), so just
-    // play the brand atom once, gently. If autoplay is blocked, rest on the
+    // Mobile / touch: no scroll-scrub. Stagger the copy in as a one-shot entrance
+    // (viewport-triggered, not scroll-scrubbed — the hero is on-screen at load),
+    // then play the brand atom once, gently. If autoplay is blocked, rest on the
     // finished frame. No scroll listeners, no per-frame seeking — smooth.
-    heroSteps.forEach(step => step.classList.add('is-in'));
+    heroEl.classList.add('hero--in');               // fades/scales the atom stage in
+    heroSteps.forEach((step, i) => {
+      setTimeout(() => step.classList.add('is-in'), 100 + i * 110);
+    });
     const playOnce = () => {
       const p = heroVideo.play();
       if (p && typeof p.catch === 'function') {
@@ -99,6 +105,7 @@ if (heroEl && heroVideo) {
     let progress   = 0;
     let rafId      = null;
     let moved      = false;
+    let kicked     = false;
     let dirty      = true;   // a scroll/resize happened; recompute layout next frame
 
     // Cache each step's threshold and last shown/hidden state so reveal() only
@@ -120,7 +127,36 @@ if (heroEl && heroVideo) {
         moved = wantMoved;
         heroEl.classList.toggle('hero--moved', wantMoved);
       }
+      // Atom rests centered (--stage-shift) and stays horizontally STATIC while the
+      // brand title scrolls up (phase 1, ~0–0.18); only then does it get "kicked" into
+      // its right column as the copy slides in from the left (phase 2).
+      const wantKicked = progress > 0.18;
+      if (wantKicked !== kicked) {
+        kicked = wantKicked;
+        heroEl.classList.toggle('hero--kicked', wantKicked);
+      }
     }
+
+    // Measure how far left the atom must shift to sit centered in the hero at
+    // rest. Negative px (stage is right of center) → translateX into the middle.
+    const heroInner = heroEl.querySelector('.hero__inner');
+    const heroStage = heroEl.querySelector('.hero__stage');
+    function measureKick() {
+      if (!heroInner || !heroStage) return;
+      // The stage may already carry --stage-shift; back it out so we measure the
+      // stage's NATURAL (in-column) center, not its currently-translated one.
+      const applied = parseFloat(getComputedStyle(heroEl).getPropertyValue('--stage-shift')) || 0;
+      const currentShift = kicked ? 0 : applied;
+      const inner = heroInner.getBoundingClientRect();
+      const stage = heroStage.getBoundingClientRect();
+      const naturalStageCenter = (stage.left + stage.width / 2) - currentShift;
+      const shift = (inner.left + inner.width / 2) - naturalStageCenter;
+      heroEl.style.setProperty('--stage-shift', shift + 'px');
+    }
+    // Center the atom NOW — before the video's metadata loads — so it never paints
+    // in its right-hand column and snaps to center on load. main.js runs at the end
+    // of <body>, so layout is resolved and the stage's box is measurable already.
+    measureKick();
 
     function getProgress() {
       const scrollable = heroEl.offsetHeight - window.innerHeight;
@@ -153,6 +189,7 @@ if (heroEl && heroVideo) {
       if (dirty) {
         dirty      = false;
         progress   = getProgress();
+        heroEl.style.setProperty('--hero-p', progress);   // scrubs the brand title up
         targetTime = progress * endTime();
         reveal();
       }
@@ -185,9 +222,19 @@ if (heroEl && heroVideo) {
       schedule();
     }
 
+    function onResize() {
+      measureKick();
+      dirty = true;
+      schedule();
+    }
+
     function start() {
       duration = heroVideo.duration || 0;
       try { heroVideo.currentTime = 0; } catch (e) {}   // paint the first frame
+      measureKick();    // place the atom centered before the transition is armed
+      // Arm the kick transition only after the centered rest state has painted,
+      // so the atom doesn't slide in from its column on load.
+      requestAnimationFrame(() => heroEl.classList.add('hero--ready'));
       dirty = true;
       schedule();
     }
@@ -195,7 +242,7 @@ if (heroEl && heroVideo) {
     else heroVideo.addEventListener('loadedmetadata', start, { once: true });
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
     reveal();   // set the resting state immediately (label + first line)
   }
 }
@@ -270,8 +317,13 @@ if (panelGallery && typeof window.PORTFOLIO_PROJECTS !== 'undefined') {
       panel.setAttribute('role', 'listitem');
       const label = CATEGORY_LABELS[p.category] || p.category || '';
       const icon  = ICONS[p.category] || '';
+      const hasImg = !!p.image;
+      const imgLayer = hasImg
+        ? `<span class="poster__img" style="background-image:url('${esc(p.image)}')"></span>`
+        : '';
       panel.innerHTML = `
-        <div class="portfolio-card__poster" style="--accent:${esc(p.accent || '#1E90FF')}">
+        <div class="portfolio-card__poster${hasImg ? ' has-image' : ''}" style="--accent:${esc(p.accent || '#1E90FF')}">
+          ${imgLayer}
           <span class="panel__demo"><span class="panel__demo-dot"></span>Demo Site</span>
           <span class="panel__spine">
             <span class="panel__spine-icon">${icon}</span>

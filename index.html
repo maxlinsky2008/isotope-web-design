@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Isotope Web Design — Free Website Builds for Local Businesses</title>
   <meta name="description" content="Isotope builds your local business a modern, high-performing website for free. You only pay to launch it and keep it live — see the finished site before you spend a cent.">
   <link rel="icon" type="image/png" href="/images/favicon.png">
@@ -28,6 +28,8 @@
        the copy shown immediately (handled in main.js). */
     if (!window.matchMedia('(hover: none), (max-width: 640px)').matches) {
       document.documentElement.classList.add('has-scrub');
+    } else {
+      document.documentElement.classList.add('has-mobile-hero');
     }
   </script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RNKSPRFZEL"></script>
@@ -73,23 +75,24 @@
     <!-- HERO -->
     <section class="hero" id="hero">
       <div class="hero__pin">
-        <div class="hero__media" aria-hidden="true">
-          <video class="hero__video" muted playsinline preload="auto">
-            <source src="videos/hero-scroll-stop.mp4" type="video/mp4">
-          </video>
-        </div>
         <div class="container hero__inner">
           <div class="hero__content">
-            <span class="hero__label hero__step" data-from="0">Web Design for Local Business</span>
+            <span class="hero__label hero__step" data-from="0.2" data-dir="left">Web Design for Local Business</span>
             <h1 class="hero__headline">
-              <span class="hero__line hero__step" data-from="0">Your website,</span>
-              <span class="hero__line hero__step" data-from="0.26">built for free.</span>
+              <span class="hero__line hero__step" data-from="0.2" data-dir="left">Your website,</span>
+              <span class="hero__line hero__step" data-from="0.3" data-dir="left">built for <span class="hero__accent">free.</span></span>
             </h1>
-            <p class="hero__sub hero__step" data-from="0.48">Isotope builds local businesses a premium, high-performing website at no upfront cost. See the finished site first — you only pay to launch it and keep it live.</p>
-            <div class="hero__ctas hero__step" data-from="0.70">
+            <p class="hero__sub hero__step" data-from="0.42" data-dir="up">Isotope builds local businesses a premium, high-performing website at no upfront cost. See the finished site first — you only pay to launch it and keep it live.</p>
+            <div class="hero__ctas hero__step" data-from="0.55" data-dir="up">
               <a href="contact.html" class="btn btn--green">Claim Your Free Build</a>
               <a href="portfolio.html" class="btn btn--outline">View Our Work</a>
             </div>
+          </div>
+          <div class="hero__stage" aria-hidden="true">
+            <span class="hero__brand"><span class="hero__accent">Isotope</span> Web Design</span>
+            <video class="hero__video" muted playsinline preload="auto">
+              <source src="videos/hero-atom-3d.mp4" type="video/mp4">
+            </video>
           </div>
         </div>
         <span class="hero__cue" aria-hidden="true">Scroll</span>

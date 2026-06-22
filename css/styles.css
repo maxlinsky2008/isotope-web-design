@@ -5,7 +5,9 @@
   --green-tint:  oklch(0.95 0.04 143);
   --green-mid:   oklch(0.85 0.09 143);
   --ink:         oklch(0.13 0.005 143);
-  --surface:     oklch(0.99 0.002 143);
+  --surface:     oklch(1 0 0);   /* pure white: the hero video's white frame must vanish
+                                    against this on every browser, even when a transformed
+                                    stage isolates the video's mix-blend-mode (Safari) */
   --mid:         oklch(0.50 0.003 143);
   --border:      oklch(0.88 0.003 143);
   --shadow:      oklch(0.13 0.005 143 / 0.07);
@@ -246,7 +248,8 @@ p { max-width: 68ch; }
 .hero {
   position: relative;
 }
-/* The pinned "stage" — one viewport the scroll-scrub plays out on. */
+/* The pinned "stage" — one viewport the scroll-scrub plays out on. Centers the
+   split-stage layout (copy + atom) vertically. */
 .hero__pin {
   position: relative;
   overflow: hidden;
@@ -269,75 +272,120 @@ p { max-width: 68ch; }
   min-height: 100svh;
 }
 
-/* Centered scroll-stop video, feathered into the page */
-.hero__media {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 0;
-  pointer-events: none;
-}
-.hero__video {
-  height: 115%;
-  width: auto;
-  min-width: 70%;
-  /* inward masking gradient — feathers all edges into the page */
-  -webkit-mask-image: radial-gradient(ellipse 72% 72% at 50% 50%, #000 42%, transparent 76%);
-          mask-image: radial-gradient(ellipse 72% 72% at 50% 50%, #000 42%, transparent 76%);
-}
-/* gentle global wash — calms the frame a touch; the real legibility comes
-   from the frosted clearing behind the copy (.hero__content::before). */
-.hero__media::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: radial-gradient(ellipse 58% 70% at 50% 50%,
-              oklch(0.99 0.002 143 / 0.5) 0%,
-              oklch(0.99 0.002 143 / 0.28) 48%,
-              transparent 78%);
-}
-
+/* Split stage: copy on one side, the atom on the other — they never overlap, so
+   the copy needs no frosted clearing or text-shadow legibility tricks. Stacks to
+   a single column (atom above copy) on narrow viewports. */
 .hero__inner {
   position: relative;
   z-index: 2;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   align-items: center;
-  text-align: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  width: 100%;
 }
+@media (min-width: 861px) {
+  .hero__inner {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 5rem);
+  }
+}
+
+/* Copy column — left-aligned, slides in from off-screen as the scrub advances. */
 .hero__content {
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 1.75rem;
-  max-width: 640px;
-  margin-inline: auto;
+  align-items: flex-start;
+  text-align: left;
+  gap: 1.5rem;
+  max-width: 36rem;
 }
-/* Static frosted "clearing" — a center-weighted white wash that calms the busy
-   atom directly behind the copy so the text reads cleanly, while the atom stays
-   crisp everywhere else. Feathered to nothing so there's no card edge.
-   A static gradient (not backdrop-filter: blur) so it costs nothing per frame —
-   re-blurring the scrubbing video every scroll frame was the site's heaviest
-   paint. A denser white naturally brightens + desaturates, standing in for the
-   old blur+brighten+saturate; the headline/sub text-shadows carry legibility. */
-.hero__content::before {
+
+/* Atom stage — its own square zone with a soft green spotlight glow behind. */
+.hero__stage {
+  position: relative;
+  width: 100%;
+  max-width: clamp(380px, 42vw, 640px);
+  aspect-ratio: 1 / 1;
+  margin-inline: auto;
+  display: grid;
+  place-items: center;
+}
+/* The atom rests centered in the hero (--stage-shift measured in JS), then the
+   copy slides in from the left and "kicks" it into its right-hand column. The
+   transition is gated behind .hero--ready so the initial centered placement is
+   instant (no slide-in on load) — only the kick itself glides. */
+.has-scrub .hero__stage {
+  /* At rest the atom drops a little below center so the big brand title has room above
+     it (and clears the nav); the kick returns it to translate(0,0) for the side-by-side. */
+  transform: translate(var(--stage-shift, 0), 6vh);
+  /* NO will-change here: promoting the stage to its own compositing layer isolates
+     the video's mix-blend-mode (below) so its white frame can't multiply down to the
+     page — it renders as a hard white square ("box"). Plain transform keeps the blend
+     grouped with the page, so the white drops out cleanly. */
+}
+.has-scrub .hero--ready .hero__stage {
+  transition: transform .8s cubic-bezier(.2, .7, .2, 1);
+}
+.has-scrub .hero--kicked .hero__stage {
+  transform: translate(0, 0);
+}
+/* Brand title — a big dominating header centered above the resting (centered) atom so
+   the hero isn't bare on load. On scroll it rides straight UP 1:1 with the page (driven
+   by --hero-p, the scrub progress) and fades, as if the scroll only moves the text —
+   the atom holds still until the kick fires later. Scrub-mode only; lives inside
+   .hero__stage so it tracks the atom's centering transform. */
+.hero__brand { display: none; }
+.has-scrub .hero__brand {
+  display: block;
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + clamp(0.75rem, 2.5vw, 2rem));
+  /* translateY rides up exactly as far as the page scrolls (scrollable span = 100vh),
+     so it reads as natural page scroll. No transition: it tracks scroll directly. */
+  transform: translateX(-50%) translateY(calc(var(--hero-p, 0) * -100vh));
+  opacity: calc(1 - var(--hero-p, 0) * 6);   /* gone by ~0.17 */
+  text-align: center;
+  white-space: nowrap;   /* one dominating line — scrub mode is always ≥641px wide */
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2.5rem, 6.5vw, 5.25rem);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--ink);
+}
+/* Premium spotlight — a soft green radial bloom that reads through the atom's
+   light video background (the video is multiplied onto the page, below). */
+.hero__stage::before {
   content: '';
   position: absolute;
-  inset: -2.75rem -4rem;
-  z-index: -1;
-  background: radial-gradient(ellipse 70% 72% at 50% 50%,
-              oklch(0.99 0.002 143 / 0.72) 0%,
-              oklch(0.99 0.002 143 / 0.55) 45%,
-              transparent 74%);
-  -webkit-mask-image: radial-gradient(ellipse 70% 72% at 50% 50%, #000 38%, transparent 74%);
-          mask-image: radial-gradient(ellipse 70% 72% at 50% 50%, #000 38%, transparent 74%);
+  inset: -22%;
+  z-index: 0;
+  /* A diffuse bloom that fades all the way to transparent with no hard ring — the
+     long, gradual ramp dissolves into the page so there's no visible "box" edge
+     where the (multiplied) video frame meets the surface. */
+  background: radial-gradient(circle at 50% 49%,
+              oklch(0.74 0.18 143 / 0.26) 0%,
+              oklch(0.74 0.18 143 / 0.12) 26%,
+              oklch(0.74 0.18 143 / 0.045) 44%,
+              oklch(0.74 0.18 143 / 0.012) 60%,
+              transparent 76%);
   pointer-events: none;
 }
+.hero__video {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* The clip's background is lifted to pure white in the encode; multiply drops
+     that white out against the light page so the atom floats and the green glow
+     shows through. No mask: a circular mask clips the square frame's corners,
+     cutting off the animation's outer trails — multiply alone hides the white. */
+  mix-blend-mode: multiply;
+}
+
 .hero__label {
   display: inline-flex;
   align-items: center;
@@ -352,39 +400,34 @@ p { max-width: 68ch; }
   padding: 0.4rem 0.9rem;
   border-radius: 9999px;
   width: fit-content;
-  margin-inline: auto;
 }
 .hero__headline {
   font-size: clamp(3rem, 6.5vw, 5.125rem);
-  /* crisp inner halo carves each glyph out of the busy frame, soft outer glow */
-  text-shadow: 0 0 1px oklch(0.99 0.002 143 / 0.9),
-               0 1px 3px oklch(0.99 0.002 143 / 0.95),
-               0 2px 22px oklch(0.99 0.002 143 / 0.8);
+  line-height: 1.04;
 }
+.hero__accent { color: var(--green-dark); }
 .hero__sub {
-  font-size: clamp(1.25rem, 1.85vw, 1.5rem);
-  /* darker than --mid for stronger presence over the light end frame */
-  color: oklch(0.29 0.011 143);
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+  color: var(--mid);
   font-weight: 500;
   line-height: 1.6;
   max-width: 46ch;
-  margin-inline: auto;
-  text-shadow: 0 0 1px oklch(0.99 0.002 143 / 0.9),
-               0 1px 10px oklch(0.99 0.002 143 / 0.95);
 }
-.hero__ctas { display: flex; gap: 0.875rem; flex-wrap: wrap; justify-content: center; }
+.hero__ctas { display: flex; gap: 0.875rem; flex-wrap: wrap; justify-content: flex-start; }
 .hero__line { display: block; }
 
-/* Text steps reveal as the scroll-scrub advances (JS toggles .is-in). */
+/* Text steps slide in from off-screen as the scroll-scrub advances (JS toggles
+   .is-in by data-from; direction is declarative via data-dir). */
 .has-scrub .hero__step {
   opacity: 0;
-  transform: translateY(18px);
   filter: blur(6px);
   transition: opacity .7s ease,
               transform .7s cubic-bezier(.2, .7, .2, 1),
               filter .7s ease;
   will-change: opacity, transform, filter;
 }
+.has-scrub .hero__step[data-dir="left"] { transform: translateX(-60px); }
+.has-scrub .hero__step[data-dir="up"]   { transform: translateY(28px); }
 .has-scrub .hero__step.is-in {
   opacity: 1;
   transform: none;
@@ -434,7 +477,17 @@ p { max-width: 68ch; }
     min-height: calc(100svh - var(--nav-h));
   }
   .has-scrub .hero__step { opacity: 1; transform: none; filter: none; }
+  .has-scrub .hero__stage { transform: none; }
+  .has-scrub .hero__brand { display: none; }
   .hero__cue { display: none; }
+  /* Mobile entrance: show everything immediately, no movement. !important wins over
+     the later max-width:640px block so the atom/copy can't stay hidden or animate. */
+  .has-mobile-hero .hero__step,
+  .has-mobile-hero .hero__stage {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 /* ─── SECTION SHARED ───────────────────────────────────────── */
@@ -1120,6 +1173,76 @@ p { max-width: 68ch; }
   white-space: nowrap;
 }
 
+/* ── Bright-editorial image cards ──────────────────────────────────
+   When a project has a bespoke photo (p.image → .has-image), the duotone
+   gradient is replaced by a full-bleed image with a static white bottom
+   scrim and dark ink type. The brand --accent threads through as a top
+   keyline, the category icon and the demo dot — so each card keeps its
+   identity while the set still reads as one cohesive collection. No
+   backdrop-filter (perf): the scrim is a plain gradient. */
+.poster__img {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.portfolio-card__poster.has-image {
+  color: var(--ink);
+  background: #efeae3;                    /* light fallback behind the photo */
+  border-top: 3px solid var(--accent);
+}
+/* white bottom scrim — kept on hover/open state too */
+.portfolio-card__poster.has-image::before,
+.panel:hover .portfolio-card__poster.has-image::before,
+.panel.is-open .portfolio-card__poster.has-image::before {
+  z-index: 1;
+  background: linear-gradient(to top,
+    rgba(255,255,255,0.97) 0%,
+    rgba(255,255,255,0.93) 20%,
+    rgba(255,255,255,0.70) 38%,
+    rgba(255,255,255,0) 60%);
+}
+.has-image .panel__spine,
+.has-image .panel__full { z-index: 2; }
+
+/* dark ink type; drop the white text-shadows used on the dark cards.
+   Text stays ink/mid for legibility across every accent; the accent is
+   reserved for graphic elements (keyline, icon, dot). */
+.has-image .poster__type,
+.has-image .panel__spine-type { color: var(--ink); text-shadow: none; }
+.has-image .poster__headline { margin: 0; text-shadow: none; }
+.has-image .poster__brand,
+.has-image .panel__spine-name { color: var(--mid); }
+.has-image .poster__kind { color: var(--mid); }
+.has-image .poster__icon,
+.has-image .panel__spine-icon { color: var(--accent); }
+.has-image .panel__spine { color: var(--ink); text-shadow: none; }
+
+/* group the expanded content at the bottom, over the scrim */
+.has-image .panel__full { justify-content: flex-end; gap: 0.5rem; }
+
+/* CTA → premium dark pill, always legible regardless of accent */
+.has-image .panel__cta {
+  margin-top: 0.9rem;
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  padding: 0.55rem 1.3rem;
+}
+
+/* Demo badge → light glass pill with dark text + accent dot */
+.has-image .panel__demo {
+  background: rgba(255,255,255,0.82);
+  color: var(--ink);
+  border-color: rgba(0,0,0,0.08);
+}
+.has-image .panel__demo-dot {
+  background: var(--accent);
+  box-shadow: 0 0 0 0.18rem color-mix(in oklab, var(--accent), transparent 72%);
+}
+
 .portfolio-empty {
   text-align: center;
   padding: 5rem 1rem;
@@ -1377,11 +1500,27 @@ p { max-width: 68ch; }
   .form-group select,
   .form-group textarea { font-size: 16px; }
 
-  /* Phones get a clean static hero (no scrub — see index.html / main.js).
-     Size the centered atom to sit calmly behind the copy; .hero__media is
-     overflow:hidden so it never spills into a horizontal scroll. */
-  .hero__video { height: auto; width: clamp(118%, 132vw, 150vw); }
+  /* Phones get a clean static hero (no scrub — see index.html / main.js):
+     the atom sits on top, copy centered below. */
+  .hero__inner { justify-items: center; }
+  .hero__stage { order: -1; max-width: min(64vw, 260px); }
+  .hero__content { align-items: center; text-align: center; max-width: 100%; }
   .hero__cue { display: none; }   /* nothing to scrub through; copy is all shown */
+
+  /* Mobile-only one-shot entrance (armed pre-paint via .has-mobile-hero; JS staggers
+     the .is-in class in main.js). No blur — keep it light on phones. */
+  .has-mobile-hero .hero__step {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .6s ease, transform .6s cubic-bezier(.2, .7, .2, 1);
+  }
+  .has-mobile-hero .hero__step.is-in { opacity: 1; transform: none; }
+  .has-mobile-hero .hero__stage {
+    opacity: 0;
+    transform: scale(.94);
+    transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1);
+  }
+  .has-mobile-hero .hero--in .hero__stage { opacity: 1; transform: none; }
 
   .hero__ctas { flex-direction: column; align-items: stretch; width: 100%; }
   .hero__ctas .btn { text-align: center; justify-content: center; }
